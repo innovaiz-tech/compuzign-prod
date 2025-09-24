@@ -1,0 +1,939 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root level overflow prevention and performance optimizations */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* Critical mobile fixes */
+@media (max-width: 768px) {
+  html, body, #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  * {
+    max-width: 100vw;
+  }
+  
+  /* Ensure header is always visible and sticky on mobile with background */
+  header {
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Force dark text on mobile for visibility */
+  header * {
+    color: #1f2937 !important;
+  }
+  
+  /* Keep yellow accent color */
+  header .text-primary-bgYellow {
+    color: #ffda17 !important;
+  }
+}
+
+/* Tablet-specific fixes to prevent scroll effects */
+@media (max-width: 1024px) and (min-width: 769px) {
+  /* Disable problematic animations on tablets */
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
+  }
+  
+  /* Disable text highlight animation that might cause scroll */
+  .text-highlight::after {
+    animation: none !important;
+    opacity: 0.8 !important;
+    transform: none !important;
+  }
+  
+  /* Reduce motion for better tablet experience */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.3s !important;
+  }
+  
+  /* Prevent horizontal scroll on tablets */
+  html, body, #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Fix animated elements that might cause scroll */
+  .absolute {
+    max-width: 100vw !important;
+    overflow: hidden !important;
+  }
+  
+  /* Reduce transform animations that might trigger scroll */
+  [style*="transform"] {
+    will-change: auto !important;
+  }
+  
+  /* Prevent any motion that might trigger reflow */
+  .tech-pulse,
+  .data-flow,
+  .network-glow {
+    animation: none !important;
+  }
+}
+
+/* Mobile-specific animation fixes */
+@media (max-width: 768px) {
+  /* Disable heavy animations on mobile */
+  .animate-ping,
+  .animate-pulse,
+  .tech-pulse,
+  .data-flow,
+  .network-glow {
+    animation: none !important;
+  }
+  
+  /* Reduce all animation durations */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Prevent any transforms that might cause scroll issues */
+  [class*="animate-"],
+  [style*="transform"] {
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* Minimal global styles for fresh start with performance optimizations */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Performance optimizations for all elements */
+*,
+*::before,
+*::after {
+  backface-visibility: hidden;
+}
+
+/* Optimize images for performance */
+img {
+  max-width: 100%;
+  height: auto;
+  /* Improve image rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Prevent layout shift */
+  vertical-align: middle;
+}
+
+body {
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: theme('fontFamily.rubik');
+}
+
+/* Prevent any element from causing horizontal overflow */
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Custom animations for hero banner */
+@keyframes techPulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes dataFlow {
+  0% { 
+    transform: translateX(-100px) translateY(0px);
+    opacity: 0;
+  }
+  10% { 
+    opacity: 1;
+  }
+  90% { 
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(calc(100vw + 100px)) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes networkGlow {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(255, 218, 23, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(255, 218, 23, 0.6), 0 0 30px rgba(255, 218, 23, 0.4);
+  }
+}
+
+/* Utility classes */
+.tech-pulse {
+  animation: techPulse 3s ease-in-out infinite;
+}
+
+.data-flow {
+  animation: dataFlow 8s linear infinite;
+}
+
+.network-glow {
+  animation: networkGlow 2s ease-in-out infinite;
+}
+
+/* Hero banner specific styles */
+.hero-bg-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(36, 36, 36, 0.5) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 2.25rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1.15;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .hero-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* Text highlight effect */
+.text-highlight {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.5rem;
+}
+
+.text-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ffda17, transparent);
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: scaleX(0.8);
+  }
+  50% { 
+    opacity: 1;
+    transform: scaleX(1.1);
+  }
+}
+
+@keyframes subtleGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(255, 218, 23, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 25px rgba(255, 218, 23, 0.5);
+  }
+}
+
+.subtle-glow {
+  animation: subtleGlow 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-8px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Line clamp utilities for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive utilities to prevent overflow */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+  
+  /* Ensure mega menu doesn't cause overflow on tablets */
+  .absolute {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+/* Tablet and small desktop fixes */
+@media (max-width: 1024px) and (min-width: 769px) {
+  /* Ensure header has background on tablets for visibility */
+  header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Dark text for tablets */
+  header .text-white {
+    color: #1f2937 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Prevent any horizontal scroll on mobile */
+  * {
+    max-width: 100vw;
+  }
+  
+  /* Fix header positioning on mobile */
+  header {
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+  }
+  
+  /* Ensure mobile menu appears above everything */
+  .mobile-menu-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9996 !important;
+  }
+  
+  .mobile-menu-content {
+    position: fixed !important;
+    right: 0 !important;
+    top: 64px !important;
+    bottom: 0 !important;
+    z-index: 9997 !important;
+  }
+  
+  /* Prevent body scroll when mobile menu is open */
+  body.mobile-menu-open {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+  }
+}
+
+/* Glassmorphic design utilities */
+.glass-morphic {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-morphic-hover {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Optimized client section animations with hardware acceleration */
+@keyframes shimmer {
+  0% { transform: translate3d(-100%, 0, 0); }
+  100% { transform: translate3d(100%, 0, 0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 4px 20px rgba(255, 218, 23, 0.2);
+    transform: translateZ(0);
+  }
+  50% { 
+    box-shadow: 0 8px 40px rgba(255, 218, 23, 0.4);
+    transform: translateZ(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+  to {
+    transform: rotate3d(0, 0, 1, 360deg);
+  }
+}
+
+/* Performance-optimized animation classes */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-efficiently {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.client-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.client-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+.client-logo-hover:hover {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 20s linear infinite;
+}
+
+/* 3D Flip Card Styles */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Enhanced card shadows and hover effects */
+.flip-card-shadow {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.flip-card-shadow:hover {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Smooth card transitions */
+.card-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stats card animations */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: countUp 0.6s ease-out forwards;
+}
+
+/* Platform card hover effects */
+.platform-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.platform-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Benefit card animations */
+.benefit-card {
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced gradient animations */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Floating elements for background */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+.float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+/* Performance optimizations for animations */
+.gpu-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Mobile-specific optimizations for flip cards */
+@media (max-width: 768px) {
+  .flip-card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .flip-card-shadow:hover {
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .platform-card:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+/* CSS Flip Card Styles - Firefox Compatible */
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: 400px;
+  perspective: 1000px;
+  /* Firefox fix */
+  -moz-perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+  /* Firefox specific fixes */
+  -moz-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  /* Ensure proper rendering in Firefox */
+  transform: translateZ(0);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+  /* Firefox specific */
+  -moz-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Enhanced backface visibility for Firefox */
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* Force hardware acceleration */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
+  /* Ensure proper stacking */
+  outline: 1px solid transparent;
+}
+
+.flip-card-front {
+  z-index: 2;
+  /* Explicit transform for Firefox */
+  transform: rotateY(0deg) translateZ(1px);
+  -moz-transform: rotateY(0deg) translateZ(1px);
+  -webkit-transform: rotateY(0deg) translateZ(1px);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg) translateZ(1px);
+  -moz-transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
+  z-index: 1;
+}
+
+/* Firefox specific fixes */
+@-moz-document url-prefix() {
+  .flip-card-inner {
+    /* Additional Firefox fallback */
+    transform-origin: center center;
+  }
+  
+  .flip-card-front, .flip-card-back {
+    /* Force GPU acceleration in Firefox */
+    will-change: transform;
+    backface-visibility: hidden !important;
+  }
+}
+
+/* Fallback for browsers with 3D transform issues */
+@supports not (transform-style: preserve-3d) {
+  .flip-card {
+    perspective: none;
+  }
+  
+  .flip-card-inner {
+    transform-style: flat;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .flip-card-front, .flip-card-back {
+    transition: opacity 0.3s ease-in-out;
+    backface-visibility: visible;
+    transform: none !important;
+  }
+  
+  .flip-card-front {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .flip-card-back {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .flip-card:hover .flip-card-front {
+    opacity: 0;
+  }
+  
+  .flip-card:hover .flip-card-back {
+    opacity: 1;
+  }
+}
+
+/* Firefox-specific flip card styles - Opacity-based approach */
+.flip-card-firefox {
+  background-color: transparent;
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.flip-card-firefox-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card-firefox-front,
+.flip-card-firefox-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.flip-card-firefox-front {
+  z-index: 2;
+}
+
+.flip-card-firefox-back {
+  z-index: 1;
+  opacity: 0;
+}
+
+/* Debugging styles - can be removed in production */
+.flip-card-front, .flip-card-firefox-front {
+  /* Subtle border to help identify card boundaries during development */
+  border: 1px solid rgba(255, 218, 23, 0.1);
+}
+
+.flip-card-back, .flip-card-firefox-back {
+  /* Subtle border to help identify card boundaries during development */
+  border: 1px solid rgba(255, 218, 23, 0.2);
+}
+
+/* Alternative approach for Firefox if 3D transforms fail completely */
+@media screen and (-moz-touch-enabled: 0) {
+  .flip-card-container:hover .flip-card-front {
+    /* Ensure front disappears on hover in Firefox */
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+  
+  .flip-card-container:hover .flip-card-back {
+    /* Ensure back appears on hover in Firefox */
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+}
+
+/* Mobile optimization for flip cards */
+@media (max-width: 768px) {
+  .flip-card, .flip-card-firefox {
+    height: 350px;
+  }
+  
+  .flip-card-inner {
+    transition: transform 0.4s ease-in-out;
+  }
+  
+  .flip-card-firefox-front,
+  .flip-card-firefox-back {
+    transition: opacity 0.4s ease-in-out;
+  }
+  
+  /* Fallback for mobile Firefox */
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg) !important;
+  }
+  
+  /* Additional mobile Firefox fix */
+  .flip-card-front, .flip-card-back {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Mobile hero section fixes to prevent scroll issues */
+@media (max-width: 768px) {
+  /* Ensure hero sections don't cause horizontal overflow */
+  .hero-right-visual {
+    overflow: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Prevent animated elements from causing scroll */
+  .hero-right-visual * {
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+  
+  /* Contain floating elements within mobile bounds */
+  .hero-right-visual .absolute {
+    max-width: calc(100vw - 48px) !important;
+    overflow: hidden !important;
+  }
+  
+  /* Disable problematic transforms on mobile */
+  .hero-right-visual [style*="transform"] {
+    transform: none !important;
+  }
+  
+  /* Ensure central hubs stay within viewport */
+  .hero-central-hub {
+    max-width: 288px !important; /* w-72 equivalent */
+    max-height: 288px !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Tablet optimizations */
+@media (max-width: 1024px) and (min-width: 769px) {
+  /* Reduce animation complexity on tablets */
+  .hero-right-visual .absolute {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.5s !important;
+  }
+  
+  /* Ensure elements stay contained */
+  .hero-central-hub {
+    max-width: 320px !important; /* w-80 equivalent */
+    max-height: 320px !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Custom animations for Application Manager page */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+/* Grid pattern for background */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(147, 51, 234, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(147, 51, 234, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

@@ -1,0 +1,203 @@
+[
+  {
+    "id": 1,
+    "slug": "global-financial-services-uptime",
+    "title": "Global Financial Services",
+    "headline": "100% Uptime",
+    "industry": "Financial Services",
+    "service": "Mobility Management",
+    "summary": "Legacy data center migration with zero downtime across 500+ servers.",
+    "challenge": "A global financial firm needed to migrate mission-critical workloads from legacy on‑prem infrastructure to a modern hybrid environment without impacting trading windows.",
+    "solution": "Phased migration waves, real‑time replication, blue‑green cutovers, and automated runbooks with 24/7 war‑room support.",
+    "result": "Achieved 100% uptime during cutover and accelerated release cycles post‑migration.",
+    "highlights": [
+      "Zero downtime across 500+ servers",
+      "Encrypted data at rest and in transit",
+      "Regulatory compliance maintained (SOX, PCI)"
+    ],
+    "metrics": [
+      { "label": "Servers Migrated", "value": "500+" },
+      { "label": "Downtime", "value": "0 min" },
+      { "label": "Cutover Windows", "value": "< 15 min" }
+    ],
+    "tags": ["migration", "finance", "high-availability"]
+  },
+  {
+    "id": 2,
+    "slug": "healthcare-network-cost-savings",
+    "title": "Healthcare Network",
+    "headline": "60% Cost Savings",
+    "industry": "Healthcare",
+    "service": "Mobility Management",
+    "summary": "Multi‑cloud migration with centralized governance and cost optimization.",
+    "challenge": "Fragmented cloud usage with growing spend and inconsistent security posture.",
+    "solution": "Landing zones, FinOps guardrails, IaC standardization, and automated policy enforcement.",
+    "result": "Reduced infrastructure costs by 60% with improved visibility and security baselines.",
+    "highlights": ["HIPAA alignment", "FinOps automation", "Centralized IAM"],
+    "metrics": [
+      { "label": "Cost Reduction", "value": "60%" },
+      { "label": "Policies as Code", "value": "100+" }
+    ],
+    "tags": ["finops", "healthcare", "multi-cloud"]
+  },
+  {
+    "id": 3,
+    "slug": "manufacturing-giant-performance",
+    "title": "Manufacturing Giant",
+    "headline": "3x Performance",
+    "industry": "Manufacturing",
+    "service": "Mobility Management",
+    "summary": "Hybrid cloud transformation for MES and analytics workloads.",
+    "challenge": "Aging on‑prem compute limited production analytics and OEE visibility.",
+    "solution": "Refactor + rehost strategy, GPU‑enabled analytics, and streaming telemetry.",
+    "result": "3x improvement in query performance and faster production insights.",
+    "highlights": ["GPU acceleration", "Edge to cloud streaming", "Observability SLOs"],
+    "metrics": [
+      { "label": "Performance", "value": "3x" },
+      { "label": "MTTR", "value": "-45%" }
+    ],
+    "tags": ["manufacturing", "analytics", "edge"]
+  },
+  {
+    "id": 4,
+    "slug": "financial-institution-zero-breaches",
+    "title": "Global Financial Institution",
+    "headline": "Zero Breaches",
+    "industry": "Financial Services",
+    "service": "Cyber Resilience",
+    "summary": "Advanced threat detection and ransomware resilience across regions.",
+    "challenge": "Rising ransomware attempts with legacy monitoring and siloed logs.",
+    "solution": "Central SIEM + XDR, immutable backups, network segmentation, and tabletop exercises.",
+    "result": "Prevented 99.7% of cyber attacks with zero data breaches.",
+    "highlights": ["XDR playbooks", "Immutable storage", "24/7 SOC"],
+    "metrics": [
+      { "label": "Attack Prevention", "value": "99.7%" },
+      { "label": "Breach Impact", "value": "0" }
+    ],
+    "tags": ["security", "xdr", "ransomware"]
+  },
+  {
+    "id": 5,
+    "slug": "healthcare-100-compliance",
+    "title": "Healthcare Network",
+    "headline": "100% Compliance",
+    "industry": "Healthcare",
+    "service": "Cyber Resilience",
+    "summary": "HIPAA compliance, ransomware protection, and rapid incident response.",
+    "challenge": "Audit findings and inconsistent backup/restore validation.",
+    "solution": "Policy automation, continuous compliance scans, and ransomware runbooks.",
+    "result": "Achieved 100% compliance with sub‑1‑hour incident response.",
+    "highlights": ["HIPAA frameworks", "Automated audits", "Air‑gapped backups"],
+    "metrics": [
+      { "label": "Compliance", "value": "100%" },
+      { "label": "Response Time", "value": "< 1 hr" }
+    ],
+    "tags": ["compliance", "hipaa", "backup"]
+  },
+  {
+    "id": 6,
+    "slug": "manufacturing-10k-devices-secured",
+    "title": "Manufacturing Enterprise",
+    "headline": "10K+ Devices Secured",
+    "industry": "Manufacturing",
+    "service": "Cyber Resilience",
+    "summary": "Industrial IoT security rollout and centralized monitoring.",
+    "challenge": "Unmanaged IoT endpoints and flat network topology.",
+    "solution": "Device identity, NAC segmentation, and SIEM correlation across plants.",
+    "result": "Secured 10,000+ IoT devices with 24/7 monitoring.",
+    "highlights": ["NAC/Zero Trust", "IoT inventory", "SIEM correlation"],
+    "metrics": [
+      { "label": "Devices Secured", "value": "10K+" }
+    ],
+    "tags": ["iot", "zero-trust", "siem"]
+  },
+  {
+    "id": 7,
+    "slug": "healthcare-provider-managed-services",
+    "title": "Global Healthcare Provider",
+    "headline": "99.9% Uptime • 40% Cost Reduction",
+    "industry": "Healthcare",
+    "service": "Managed Services",
+    "summary": "24/7 NOC, SOC integration, and cloud operations with SLOs.",
+    "challenge": "Multi‑location operations with rising incidents and spend.",
+    "solution": "SRE runbooks, automation, and unified observability with cost guardrails.",
+    "result": "Stabilized operations with measurable SLOs and significant savings.",
+    "highlights": ["SRE runbooks", "Unified observability", "Cost guardrails"],
+    "metrics": [
+      { "label": "Uptime", "value": "99.9%" },
+      { "label": "Cost Reduction", "value": "40%" }
+    ],
+    "tags": ["managed-services", "noc", "sre"]
+  },
+  {
+    "id": 8,
+    "slug": "finance-zero-incidents",
+    "title": "Financial Services Firm",
+    "headline": "Zero Security Incidents",
+    "industry": "Financial Services",
+    "service": "Managed Services",
+    "summary": "Integrated SOC with AI monitoring and automated containment.",
+    "challenge": "Stringent compliance and audit trails required across regions.",
+    "solution": "SOAR playbooks, role‑based access, and immutable evidence pipeline.",
+    "result": "100% compliance maintained with zero incidents.",
+    "highlights": ["SOAR", "RBAC", "Evidence chain"],
+    "metrics": [
+      { "label": "Incidents", "value": "0" }
+    ],
+    "tags": ["soc", "soar", "compliance"]
+  },
+  {
+    "id": 9,
+    "slug": "manufacturing-operational-efficiency",
+    "title": "Manufacturing Enterprise",
+    "headline": "50% Efficiency Improvement",
+    "industry": "Manufacturing",
+    "service": "Managed Services",
+    "summary": "Phased cloud transformation with managed support and automation.",
+    "challenge": "Legacy change processes and high toil impacted release velocity.",
+    "solution": "GitOps pipelines, change automation, and error budgets aligned to SLOs.",
+    "result": "50% improvement in operational efficiency post‑migration.",
+    "highlights": ["GitOps", "Change automation", "Error budgets"],
+    "metrics": [
+      { "label": "Efficiency", "value": "+50%" }
+    ],
+    "tags": ["gitops", "slo", "automation"]
+  },
+  {
+    "id": 10,
+    "slug": "support-as-a-service-fast-resolution",
+    "title": "Global SaaS Provider",
+    "headline": "35% Faster Resolution",
+    "industry": "Software",
+    "service": "Support as a Service",
+    "summary": "Enterprise support operations with knowledge‑centered service (KCS).",
+    "challenge": "High ticket backlog and inconsistent response quality.",
+    "solution": "Tiered support with KCS, AI‑assisted triage, and proactive health checks.",
+    "result": "Cut average resolution time by 35% and improved CSAT.",
+    "highlights": ["AI triage", "KCS", "Proactive checks"],
+    "metrics": [
+      { "label": "Resolution Time", "value": "-35%" },
+      { "label": "CSAT", "value": "+18%" }
+    ],
+    "tags": ["saas", "support", "kcs"]
+  },
+  {
+    "id": 11,
+    "slug": "raas-rapid-staff-augmentation",
+    "title": "Telecom Enterprise",
+    "headline": "Rapid Staff Augmentation",
+    "industry": "Telecommunications",
+    "service": "Resource as a Service",
+    "summary": "Specialized cloud and security roles deployed within 2 weeks.",
+    "challenge": "Critical project timelines with niche skill shortage.",
+    "solution": "RaaS onboarding playbook, vetted talent cloud, and outcome SLAs.",
+    "result": "Projects delivered on time with measurable productivity gains.",
+    "highlights": ["2‑week onboarding", "Vetted experts", "Outcome SLAs"],
+    "metrics": [
+      { "label": "Time‑to‑Fill", "value": "< 14 days" }
+    ],
+    "tags": ["raas", "talent", "delivery"]
+  }
+]
+
+
