@@ -49,10 +49,10 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-300 mb-6 text-sm leading-relaxed">
-              Empowering businesses with innovative IT solutions, cloud migration, 
+              Empowering businesses with innovative IT solutions, cloud migration,
               cybersecurity, and managed services. Your trusted partner in digital transformation.
             </p>
-            
+
             {/* Social Links */}
             <div className="flex space-x-4">
               <a href="https://www.instagram.com/compuzign_/" target='_blank' className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-bgYellow hover:text-black transition-all duration-300">
@@ -77,8 +77,8 @@ export default function Footer() {
             <ul className="space-y-3">
               {services.map((service) => (
                 <li key={service.name}>
-                  <Link 
-                    to={service.href} 
+                  <Link
+                    to={service.href}
                     className="text-gray-300 hover:text-primary-bgYellow transition-colors text-sm"
                   >
                     {service.name}
@@ -94,8 +94,8 @@ export default function Footer() {
             <ul className="space-y-3">
               {company.map((item) => (
                 <li key={item.name}>
-                  <Link 
-                    to={item.href} 
+                  <Link
+                    to={item.href}
                     className="text-gray-300 hover:text-primary-bgYellow transition-colors text-sm"
                   >
                     {item.name}
@@ -111,8 +111,8 @@ export default function Footer() {
             <ul className="space-y-3">
               {resources.map((resource) => (
                 <li key={resource.name}>
-                  <Link 
-                    to={resource.href} 
+                  <Link
+                    to={resource.href}
                     className="text-gray-300 hover:text-primary-bgYellow transition-colors text-sm"
                   >
                     {resource.name}
@@ -155,8 +155,8 @@ export default function Footer() {
               <HiMail className="w-5 h-5 text-primary-bgYellow mt-1" />
               <div>
                 <h4 className="font-semibold text-white mb-2">Email Us</h4>
-                <a 
-                  href="mailto:contact@compuzign.com" 
+                <a
+                  href="mailto:contact@compuzign.com"
                   className="text-gray-300 hover:text-white transition-colors font-medium text-sm"
                 >
                   contact@compuzign.com
@@ -203,6 +203,9 @@ export default function Footer() {
               Cookie Policy
             </Link>
           </div>
+          <p className="text-gray-400 text-sm mt-4 md:mt-0">
+            Created by <a href="mailto:innovaiztechno@gmail.com" className="text-gray-400 hover:text-white transition-colors">innovaiztechno@gmail.com</a>
+          </p>
         </div>
       </div>
     </footer>
