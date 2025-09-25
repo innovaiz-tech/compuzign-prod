@@ -44,7 +44,7 @@ export default function Footer() {
                     <span className="text-white">Compu</span>
                     <span className="text-primary-bgYellow">Zign</span>
                   </span>
-                  <span className='text-primary-bgYellow text-xs italic'>Let us do IT for you!!!</span>
+                  <div className='text-primary-bgYellow text-xs italic'>Let us do <span className='text-primary-textWhite font-bold italic'>{" "}IT{" "}</span> for you!!!</div>
                 </div>
               </div>
             </div>

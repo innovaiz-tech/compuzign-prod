@@ -355,8 +355,8 @@ export default function Headers() {
                 </span>
                 <span className="text-primary-bgYellow">Zign</span>
               </div>
-              <div className='text-primary-bgYellow text-xs italic'>Let us do 
-                <span className='text-primary-textWhite'>
+                <div className='text-primary-bgYellow text-xs italic'>Let us do 
+                <span className='text-primary-textWhite font-bold italic'>
                   {" "}IT{" "} 
                 </span>
                 for you!!!</div>
