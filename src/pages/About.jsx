@@ -134,14 +134,14 @@ export default function About() {
       name: "Jacksonville, FL",
       type: "Secondary",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=Jacksonville%2C+FL",
-      description: "US Operations",
+      description: "North America Operations",
       coordinates: { x: 25, y: 45 }
     },
     {
       name: "Hyderabad, IN",
       type: "Secondary",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=Hyderabad%2C+Telangana%2C+India",
-      description: "India Operations",
+      description: "EMEA Operations",
       coordinates: { x: 75, y: 55 }
     }
   ];

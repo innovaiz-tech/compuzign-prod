@@ -203,9 +203,6 @@ export default function Footer() {
               Cookie Policy
             </Link>
           </div>
-          <p className="text-gray-400 text-sm mt-4 md:mt-0">
-            Created by <a href="mailto:innovaiztechno@gmail.com" className="text-gray-400 hover:text-white transition-colors">innovaiztechno@gmail.com</a>
-          </p>
         </div>
       </div>
     </footer>
