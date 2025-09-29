@@ -424,10 +424,12 @@ export default function JobDetail() {
 
 
                 {/* Why Join Us */}
-                <div className="bg-gradient-to-r from-primary-bgYellow/10 to-primary-bgYellow/5 p-6 rounded-xl border border-primary-bgYellow/30 mb-8">
-                  <h4 className="text-lg font-semibold text-primary-bgYellow mb-3">Why Join CompuZign?</h4>
-                  <p className="text-gray-200 leading-relaxed">{job.impact}</p>
-                </div>
+                {job.impact &&
+                  <div className="bg-gradient-to-r from-primary-bgYellow/10 to-primary-bgYellow/5 p-6 rounded-xl border border-primary-bgYellow/30 mb-8">
+                    <h4 className="text-lg font-semibold text-primary-bgYellow mb-3">Why Join CompuZign?</h4>
+                    <p className="text-gray-200 leading-relaxed">{job.impact}</p>
+                  </div>
+                }
               </div>
 
               {/* Job ID */}
