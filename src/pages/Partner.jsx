@@ -31,6 +31,8 @@ import broadcomLogo from '../assets/compute-assets/broadcom-logo.png';
 import oracleLogo from '../assets/compute-assets/oracle-1.svg';
 import nutanixLogo from '../assets/compute-assets/nutanix-logo.svg';
 import crowdstrikeLogo from '../assets/compute-assets/crowdstrike-logo.svg';
+import mccujaLogo from '../assets/compute-assets/mccuja.png';
+import qibLogo from '../assets/compute-assets/qib.png';
 
 // Import vendor logos
 import dellEmcLogo from '../assets/cloud-vendors/dell-emc-logo.svg';
@@ -38,6 +40,8 @@ import ibmLogo from '../assets/cloud-vendors/ibm.svg';
 import netappLogo from '../assets/cloud-vendors/netapp-1.svg';
 import dxcLogo from '../assets/cloud-vendors/dxc-technology-1.svg';
 import pureStorageLogo from '../assets/cloud-vendors/pure-storage-seeklogo.png';
+import veeamLogo from '../assets/cloud-vendors/veeam-logo.svg';
+import sentinalLogo from '../assets/cloud-vendors/sentinelone-logo.svg';
 
 export default function Partner() {
   const [heroVisible, setHeroVisible] = useState(false);
@@ -148,22 +152,26 @@ export default function Partner() {
 
   // Technology partners
   const technologyPartners = [
-    { name: 'AWS', logo: awsLogo, category: 'Cloud Computing' },
-    { name: 'Microsoft Azure', logo: azureLogo, category: 'Cloud Platform' },
-    { name: 'Google Cloud', logo: googleCloudLogo, category: 'Cloud Services' },
-    { name: 'IBM Cloud', logo: ibmCloudLogo, category: 'Enterprise Cloud' },
-    { name: 'Broadcom', logo: broadcomLogo, category: 'Virtualization' },
-    { name: 'Oracle Cloud', logo: oracleLogo, category: 'Database & Cloud' },
-    { name: 'Nutanix', logo: nutanixLogo, category: 'Hyperconverged' },
-    { name: 'crowdStrike', logo: crowdstrikeLogo, category: 'Open Source' }
+    { name: 'AWS', logo: awsLogo, category: 'Cloud Computing', url: 'https://aws.amazon.com' },
+    { name: 'Microsoft Azure', logo: azureLogo, category: 'Cloud Platform', url: 'https://azure.microsoft.com' },
+    { name: 'Google Cloud', logo: googleCloudLogo, category: 'Cloud Services', url: 'https://cloud.google.com' },
+    { name: 'IBM Cloud', logo: ibmCloudLogo, category: 'Enterprise Cloud', url: 'https://www.ibm.com/cloud' },
+    { name: 'Broadcom', logo: broadcomLogo, category: 'Virtualization', url: 'https://www.broadcom.com/' },
+    { name: 'Oracle Cloud', logo: oracleLogo, category: 'Database & Cloud', url: 'https://www.oracle.com/cloud/' },
+    { name: 'Nutanix', logo: nutanixLogo, category: 'Hyperconverged', url: 'https://www.nutanix.com/' },
+    { name: 'crowdStrike', logo: crowdstrikeLogo, category: 'Open Source', url: 'https://www.crowdstrike.com' },
+    { name: 'Manchester Co-operative Credit Union', logo: mccujaLogo, category: 'Financial Services', url: 'https://mccuja.com/' },
+    { name: 'QIB', logo: qibLogo, category: 'Islamic Banking', url: 'https://www.qib.com.qa/en/' }
   ];
 
   const vendorPartners = [
-    { name: 'Dell EMC', logo: dellEmcLogo, category: 'Storage & Infrastructure' },
-    { name: 'IBM', logo: ibmLogo, category: 'Enterprise Solutions' },
-    { name: 'NetApp', logo: netappLogo, category: 'Data Management' },
-    { name: 'DXC Technology', logo: dxcLogo, category: 'IT Services' },
-    { name: 'Pure Storage', logo: pureStorageLogo, category: 'Flash Storage' }
+    { name: 'Dell EMC', logo: dellEmcLogo, category: 'Storage & Infrastructure', url: 'https://www.dell.com' },
+    { name: 'IBM', logo: ibmLogo, category: 'Enterprise Solutions', url: 'https://www.ibm.com' },
+    { name: 'NetApp', logo: netappLogo, category: 'Data Management', url: 'https://www.netapp.com/' },
+    { name: 'DXC Technology', logo: dxcLogo, category: 'IT Services', url: 'https://dxc.com/us/en' },
+    { name: 'Pure Storage', logo: pureStorageLogo, category: 'Flash Storage', url: 'https://www.purestorage.com' },
+    { name: 'Veeam', logo: veeamLogo, category: 'Backup & Recovery', url: 'https://www.veeam.com/' },
+    { name: 'SentinelOne', logo: sentinalLogo, category: 'Cybersecurity', url: 'https://www.sentinelone.com/' }
   ];
 
   return (
@@ -384,9 +392,12 @@ export default function Partner() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             {technologyPartners.map((partner, index) => (
-              <motion.div
+              <motion.a
                 key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-yellow-400/50 transition-all duration-300 group"
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-yellow-400/50 transition-all duration-300 group cursor-pointer block"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={partnersVisible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -401,7 +412,7 @@ export default function Partner() {
                 </div>
                 <h3 className="text-center text-white font-semibold mb-2">{partner.name}</h3>
                 <p className="text-center text-gray-400 text-sm">{partner.category}</p>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
 
@@ -417,9 +428,12 @@ export default function Partner() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {vendorPartners.map((partner, index) => (
-              <motion.div
+              <motion.a
                 key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-yellow-400/50 transition-all duration-300 group"
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-yellow-400/50 transition-all duration-300 group cursor-pointer block"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={partnersVisible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: (index + 8) * 0.1 }}
@@ -434,7 +448,7 @@ export default function Partner() {
                 </div>
                 <h3 className="text-center text-white font-semibold mb-2">{partner.name}</h3>
                 <p className="text-center text-gray-400 text-sm">{partner.category}</p>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </motion.div>
