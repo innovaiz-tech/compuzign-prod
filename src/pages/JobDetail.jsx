@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
+import {
   HiArrowLeft,
   HiLocationMarker,
   HiCalendar,
@@ -28,6 +28,63 @@ export default function JobDetail() {
   const jobsData = [
     {
       id: 1,
+      title: "Enterprise Account Manager",
+      location: "Remote but preference will be given to Latin and North Americas resources",
+      type: "Full-time",
+      icon: HiSparkles,
+      color: "text-blue-400",
+      published: "September 25, 2025",
+      duration: "Permanent",
+      category: "",
+      jobId: "COMP-001",
+      overview: "",
+      language: "Fluent in English and second language, preferably Spanish",
+      jobSummary: "We are seeking a highly motivated and results-driven Enterprise Account Manager to manage and grow relationships with our key enterprise clients. In this role, you will act as the main point of contact for high-value accounts, ensuring customer satisfaction, driving revenue growth, and aligning client needs with our solutions. You’ll work cross-functionally with internal teams to deliver strategic value and ensure long-term client success.",
+      requirements: [
+        "Bachelor’s degree in Business, Marketing, or related field (MBA is a plus).",
+        "5+ years of experience in account management, sales, or client services—preferably in B2B or SaaS environments.",
+        "Proven track record of managing large enterprise accounts and meeting/exceeding revenue goals.",
+        "Excellent communication, negotiation, and presentation skills.",
+        "Strong analytical and problem-solving abilities.",
+        "Proficiency with CRM platforms and other sales tools.",
+        "Proficiency with Microsoft Tools – Excel, Word, PowerPoint.",
+        "Ability to generate PowerPoint Slides and present to Customers.",
+        "The ability to work independently, leverage internal resources, and lead sales initiatives.",
+        "",
+      ],
+      responsibilities: [
+        "Account Management: Own and manage relationships with assigned clients, serving as their trusted advisor. Build and nurture strong relationships with key stakeholders and executives within client organizations to foster trust and loyalty.",
+        "Contract Management: Draft, review, and manage contractual documents to ensure compliance with company policies and client requirements.",
+        "Client Success: Ensure client satisfaction through consistent communication, problem-solving, and proactive support.",
+        "Strategic Planning: Develop strategic account plans to deepen customer engagement and increase product adoption. Revenue Growth/Sales & Pipeline Management: Identify upselling and cross-selling opportunities to expand account revenue. Maintain an accurate sales pipeline, forecast performance, and track key performance indicators (KPIs) to ensure consistent results.",
+        "Retention: Drive account renewals and reduce churn by maintaining a high level of customer engagement.",
+        "Proposal Development: Prepare detailed proposals, Statements of Work (SOWs), and renewal documentation for clients.",
+        "Cross-functional Collaboration: Partner with sales, marketing, product, and customer success teams to deliver exceptional service and solutions.",
+        "Reporting: Maintain accurate records of client interactions and account activity in CRM tools (e.g., Salesforce).",
+        "Market Insights: Stay informed on industry trends, client business changes, and competitive landscape to position offerings effectively.",
+        "Contract Negotiations: Lead negotiations for complex contractual agreements, ensuring a balance between client expectations and company objectives.",
+        "Problem-Solving: Act as a client advocate, addressing and resolving issues promptly through strong problem-solving skills and collaboration with cross-functional teams.",
+        "Reporting & Analytics: Generate regular account performance reports, revenue forecasts, and business reviews for both clients and internal leadership.",
+        "Legal & Compliance Awareness: Familiarity with common contractual terms, data security, and regulatory requirements (e.g., GDPR, SOC 2).",
+      ],
+      qualifications: [
+        "Experience working in a fast-paced, high-growth environment.",
+        "Understanding of IT Industry needs and challenges.",
+        "Technical background or experience selling complex solutions is a plus.",
+      ],
+      workConditions: [
+        "Full-time position.",
+        "Fully Remote – any timezone, preferable US EST.",
+        "Travel to client sites or industry events.",
+        "Ability to travel overseas to customers, industry events, conferences, or client workshops (Company Paid)",
+      ],
+      salary: [
+        "Negotiable, Based on location and experience. Paid monthly in USD.",
+      ],
+
+    },
+    {
+      id: 2,
       title: "Senior AI Infrastructure Architect",
       location: "Remote (Global)",
       type: "Full-time",
@@ -40,7 +97,7 @@ export default function JobDetail() {
       overview: "Lead the design and implementation of scalable, high-performance AI and HPC infrastructure for enterprise clients. You'll assess existing systems, develop tailored blueprints, and ensure architectures support advanced AI workloads, from model training to real-time inference.",
       responsibilities: [
         "Conduct comprehensive infrastructure assessments for AI readiness",
-        "Architect solutions optimizing for speed, security, and scalability", 
+        "Architect solutions optimizing for speed, security, and scalability",
         "Collaborate with cross-functional teams to integrate AI pipelines"
       ],
       qualifications: [
@@ -52,7 +109,7 @@ export default function JobDetail() {
       applicationInstructions: "Submit your resume and portfolio to careers@compuzign.com"
     },
     {
-      id: 2,
+      id: 3,
       title: "Cloud-Native Application Modernization Consultant",
       location: "New York, NY or Bangalore, India (Hybrid)",
       type: "Full-time",
@@ -77,7 +134,7 @@ export default function JobDetail() {
       applicationInstructions: "Send your resume to careers@compuzign.com"
     },
     {
-      id: 3,
+      id: 4,
       title: "Automation Solutions Engineer",
       location: "London, UK or Remote (EMEA)",
       type: "Full-time",
@@ -102,7 +159,7 @@ export default function JobDetail() {
       applicationInstructions: "Email your resume and automation project examples to careers@compuzign.com"
     },
     {
-      id: 4,
+      id: 5,
       title: "IT Cost Optimization Strategist",
       location: "San Francisco, CA or Singapore (Hybrid)",
       type: "Full-time",
@@ -127,7 +184,7 @@ export default function JobDetail() {
       applicationInstructions: "Submit your resume and case studies to careers@compuzign.com"
     },
     {
-      id: 5,
+      id: 6,
       title: "Data-Driven Strategy Consultant (Healthcare Focus)",
       location: "Boston, MA or Remote (North America)",
       type: "Full-time",
@@ -175,7 +232,7 @@ export default function JobDetail() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
       <ScrollToTop />
-      
+
       {/* Header Section */}
       <section className="relative pt-24 pb-8 lg:pt-32 lg:pb-12">
         <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
@@ -220,37 +277,45 @@ export default function JobDetail() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
           >
-            <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
-              <div className="flex items-center text-gray-400 mb-2">
-                <HiCalendar className="w-4 h-4 mr-2" />
-                <span className="text-sm">Published</span>
+            {job.published &&
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
+                <div className="flex items-center text-gray-400 mb-2">
+                  <HiCalendar className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Published</span>
+                </div>
+                <p className="text-white font-medium">{job.published}</p>
               </div>
-              <p className="text-white font-medium">{job.published}</p>
-            </div>
-            
-            <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
-              <div className="flex items-center text-gray-400 mb-2">
-                <HiLocationMarker className="w-4 h-4 mr-2" />
-                <span className="text-sm">Location</span>
+            }
+
+            {job.location &&
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
+                <div className="flex items-center text-gray-400 mb-2">
+                  <HiLocationMarker className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Location</span>
+                </div>
+                <p className="text-white font-medium">{job.location}</p>
               </div>
-              <p className="text-white font-medium">{job.location}</p>
-            </div>
-            
-            <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
-              <div className="flex items-center text-gray-400 mb-2">
-                <HiTag className="w-4 h-4 mr-2" />
-                <span className="text-sm">Category</span>
+            }
+
+            {job.category &&
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
+                <div className="flex items-center text-gray-400 mb-2">
+                  <HiTag className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Category</span>
+                </div>
+                <p className="text-white font-medium">{job.category}</p>
               </div>
-              <p className="text-white font-medium">{job.category}</p>
-            </div>
-            
-            <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
-              <div className="flex items-center text-gray-400 mb-2">
-                <HiClock className="w-4 h-4 mr-2" />
-                <span className="text-sm">Duration</span>
+            }
+
+            {job.duration &&
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/40">
+                <div className="flex items-center text-gray-400 mb-2">
+                  <HiClock className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Duration</span>
+                </div>
+                <p className="text-white font-medium">{job.duration}</p>
               </div>
-              <p className="text-white font-medium">{job.duration}</p>
-            </div>
+            }
           </motion.div>
         </div>
       </section>
@@ -266,51 +331,105 @@ export default function JobDetail() {
             {/* Description Section */}
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-white mb-6">DESCRIPTION</h2>
-              
+
               {/* Role Overview */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-primary-bgYellow mb-4">Details:</h3>
-                <p className="text-gray-200 leading-relaxed mb-6">
-                  {job.overview}
-                </p>
-                
-                {/* Key Responsibilities */}
-                <div className="mb-8">
-                  <h4 className="text-md font-semibold text-white mb-4 flex items-center">
-                    <HiChartBar className="w-4 h-4 mr-2 text-blue-400" />
-                    Key Responsibilities:
-                  </h4>
-                  <ul className="space-y-2 ml-6">
-                    {job.responsibilities.map((item, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="text-primary-bgYellow mr-3">•</span>
-                        <span className="text-gray-300 leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {job.overview &&
+                  <>
+                    <h3 className="text-lg font-semibold text-primary-bgYellow mb-4">Details:</h3>
+                    <p className="text-gray-200 leading-relaxed mb-6">
+                      {job.overview}
+                    </p>
+                  </>
+                }
+
+                {/* Language */}
+                {job.language &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Language:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.language}
+                    </ul>
+                  </div>
+                }
+                {job.jobSummary &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Job Summary:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.jobSummary}
+                    </ul>
+                  </div>
+                }
+                {job.responsibilities &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Key Responsibilities:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.responsibilities.map((item, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <span className="text-primary-bgYellow mr-3">•</span>
+                          <span className="text-gray-300 leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                }
 
                 {/* Qualifications */}
-                <div className="mb-8">
-                  <h4 className="text-md font-semibold text-white mb-4 flex items-center">
-                    <HiShieldCheck className="w-4 h-4 mr-2 text-green-400" />
-                    Qualifications:
-                  </h4>
-                  <ul className="space-y-2 ml-6">
-                    {job.qualifications.map((item, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="text-primary-bgYellow mr-3">•</span>
-                        <span className="text-gray-300 leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {job.qualifications &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Qualifications:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.qualifications.map((item, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <span className="text-primary-bgYellow mr-3">•</span>
+                          <span className="text-gray-300 leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                }
+                {job.workConditions &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Work Conditions:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.workConditions.map((item, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <span className="text-primary-bgYellow mr-3">•</span>
+                          <span className="text-gray-300 leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                }
+                {job.salary &&
+                  <div className="mb-8">
+                    <h4 className="text-md font-semibold text-white mb-4 flex items-center">
+                      Salary:
+                    </h4>
+                    <ul className="space-y-2 ml-6">
+                      {job.salary}
+                    </ul>
+                  </div>
+                }
+
 
                 {/* Why Join Us */}
-                <div className="bg-gradient-to-r from-primary-bgYellow/10 to-primary-bgYellow/5 p-6 rounded-xl border border-primary-bgYellow/30 mb-8">
-                  <h4 className="text-lg font-semibold text-primary-bgYellow mb-3">Why Join CompuZign?</h4>
-                  <p className="text-gray-200 leading-relaxed">{job.impact}</p>
-                </div>
+                {job.impact &&
+                  <div className="bg-gradient-to-r from-primary-bgYellow/10 to-primary-bgYellow/5 p-6 rounded-xl border border-primary-bgYellow/30 mb-8">
+                    <h4 className="text-lg font-semibold text-primary-bgYellow mb-3">Why Join CompuZign?</h4>
+                    <p className="text-gray-200 leading-relaxed">{job.impact}</p>
+                  </div>
+                }
               </div>
 
               {/* Job ID */}
@@ -331,7 +450,7 @@ export default function JobDetail() {
                   </div>
                   <div className="flex items-center space-x-4">
                     <a
-                      href={`mailto:careers@compuzign.com?subject=Application for ${job.title} - ${job.jobId}`}
+                      href={`mailto:contactus@compuzign.com?subject=Application for ${job.title} - ${job.jobId}`}
                       className="inline-flex items-center px-6 py-3 bg-primary-bgYellow text-black font-semibold rounded-lg hover:bg-yellow-400 transition-colors duration-300 group"
                     >
                       <HiMail className="w-4 h-4 mr-2" />

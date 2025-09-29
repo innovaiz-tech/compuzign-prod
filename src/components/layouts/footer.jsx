@@ -156,10 +156,10 @@ export default function Footer() {
               <div>
                 <h4 className="font-semibold text-white mb-2">Email Us</h4>
                 <a
-                  href="mailto:contact@compuzign.com"
+                  href="mailto:contactus@compuzign.com"
                   className="text-gray-300 hover:text-white transition-colors font-medium text-sm"
                 >
-                  contact@compuzign.com
+                  contactus@compuzign.com
                 </a>
               </div>
             </div>

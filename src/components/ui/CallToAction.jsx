@@ -15,8 +15,8 @@ const contactMethods = [
   {
     icon: HiMail,
     title: "Email Us",
-    details: ["contact@compuzign.com"],
-    href: "mailto:contact@compuzign.com",
+    details: ["contactus@compuzign.com"],
+    href: "mailto:contactus@compuzign.com",
     description: "Get detailed information via email"
   }
 ];
