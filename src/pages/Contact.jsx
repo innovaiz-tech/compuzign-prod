@@ -176,7 +176,7 @@ export default function Contact() {
               </motion.a>
               
               <motion.a
-                href="mailto:contact@compuzign.com"
+                href="mailto:contactus@compuzign.com"
                 className="group flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white hover:text-slate-900 transition-all duration-300 hover:scale-105"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -517,8 +517,8 @@ export default function Contact() {
                 
                 <div className="flex items-center">
                     <HiMail className="w-5 h-5 text-primary-bgYellow flex-shrink-0" />
-                    <a href="mailto:contact@compuzign.com" className="ml-3 text-white font-medium hover:text-primary-bgYellow transition-colors">
-                      contact@compuzign.com
+                    <a href="mailto:contactus@compuzign.com" className="ml-3 text-white font-medium hover:text-primary-bgYellow transition-colors">
+                      contactus@compuzign.com
                     </a>
                   </div>
                   
@@ -551,7 +551,7 @@ export default function Contact() {
                   </motion.a>
 
                   <motion.a
-                    href="mailto:contact@compuzign.com"
+                    href="mailto:contactus@compuzign.com"
                     className="group flex items-center p-4 bg-white/5 rounded-xl border border-white/10 hover:border-primary-bgYellow/50 hover:bg-white/10 transition-all duration-300"
                     whileHover={{ scale: 1.02 }}
                   >
@@ -560,7 +560,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="text-white font-semibold">Email Us</p>
-                      <p className="text-gray-400 text-sm">contact@compuzign.com</p>
+                      <p className="text-gray-400 text-sm">contactus@compuzign.com</p>
                     </div>
                     <HiArrowRight className="w-5 h-5 text-gray-400 ml-auto group-hover:text-primary-bgYellow group-hover:translate-x-1 transition-all" />
                   </motion.a>

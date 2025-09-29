@@ -27,16 +27,15 @@ import awsLogo from '../assets/compute-assets/aws-2.svg';
 import azureLogo from '../assets/compute-assets/azure-2.svg';
 import googleCloudLogo from '../assets/compute-assets/google-cloud-1.svg';
 import ibmCloudLogo from '../assets/compute-assets/ibm-cloud-1.svg';
-import vmwareLogo from '../assets/compute-assets/vmware-1.svg';
+import broadcomLogo from '../assets/compute-assets/broadcom-logo.png';
 import oracleLogo from '../assets/compute-assets/oracle-1.svg';
 import nutanixLogo from '../assets/compute-assets/nutanix-logo.svg';
-import proxmoxLogo from '../assets/compute-assets/proxmox.svg';
+import crowdstrikeLogo from '../assets/compute-assets/crowdstrike-logo.svg';
 
 // Import vendor logos
 import dellEmcLogo from '../assets/cloud-vendors/dell-emc-logo.svg';
 import ibmLogo from '../assets/cloud-vendors/ibm.svg';
 import netappLogo from '../assets/cloud-vendors/netapp-1.svg';
-import hitachiLogo from '../assets/cloud-vendors/hitachi-3.svg';
 import dxcLogo from '../assets/cloud-vendors/dxc-technology-1.svg';
 import pureStorageLogo from '../assets/cloud-vendors/pure-storage-seeklogo.png';
 
@@ -153,17 +152,16 @@ export default function Partner() {
     { name: 'Microsoft Azure', logo: azureLogo, category: 'Cloud Platform' },
     { name: 'Google Cloud', logo: googleCloudLogo, category: 'Cloud Services' },
     { name: 'IBM Cloud', logo: ibmCloudLogo, category: 'Enterprise Cloud' },
-    { name: 'VMware', logo: vmwareLogo, category: 'Virtualization' },
+    { name: 'Broadcom', logo: broadcomLogo, category: 'Virtualization' },
     { name: 'Oracle Cloud', logo: oracleLogo, category: 'Database & Cloud' },
     { name: 'Nutanix', logo: nutanixLogo, category: 'Hyperconverged' },
-    { name: 'Proxmox', logo: proxmoxLogo, category: 'Open Source' }
+    { name: 'crowdStrike', logo: crowdstrikeLogo, category: 'Open Source' }
   ];
 
   const vendorPartners = [
     { name: 'Dell EMC', logo: dellEmcLogo, category: 'Storage & Infrastructure' },
     { name: 'IBM', logo: ibmLogo, category: 'Enterprise Solutions' },
     { name: 'NetApp', logo: netappLogo, category: 'Data Management' },
-    { name: 'Hitachi', logo: hitachiLogo, category: 'Storage Systems' },
     { name: 'DXC Technology', logo: dxcLogo, category: 'IT Services' },
     { name: 'Pure Storage', logo: pureStorageLogo, category: 'Flash Storage' }
   ];
