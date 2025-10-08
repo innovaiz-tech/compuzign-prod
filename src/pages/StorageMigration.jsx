@@ -38,6 +38,10 @@ import React from 'react';
 
 // Vendor logo imports
 import NetAppLogo from '../assets/cloud-vendors/netapp-1.svg';
+import GCPLogo from "../assets/cloud-vendors/Google-Cloud-Emblem.png";
+import AWSLogo from "../assets/cloud-vendors/AWS.webp";
+import AzureLogo from "../assets/cloud-vendors/Microsoft_Azure_Logo.png";
+import BroadcomLogo from "../assets/cloud-vendors/BroadcomLogo.png";
 import DellEMCLogo from '../assets/cloud-vendors/dell-emc-logo.svg';
 import IBMLogo from '../assets/cloud-vendors/ibm.svg';
 import HitachiLogo from '../assets/cloud-vendors/hitachi-3.svg';
@@ -277,12 +281,16 @@ export default function StorageMigration() {
 
   // Multi-vendor support data with actual assets
   const vendorLogos = [
-    { name: "DXC Technology", logo: DXCLogo, alt: "DXC Technology" },
-    { name: "PureStorage", logo: PureStorageLogo, alt: "Pure Storage" },
-    { name: "Hitachi Vantara", logo: HitachiLogo, alt: "Hitachi Vantara" },
-    { name: "IBM", logo: IBMLogo, alt: "IBM" },
-    { name: "Dell EMC", logo: DellEMCLogo, alt: "Dell EMC" },
-    { name: "NetApp", logo: NetAppLogo, alt: "NetApp" }
+    { name: "DXC Technology", logo: DXCLogo, alt: "DXC Technology", url: "https://dxc.com/" },
+    { name: "PureStorage", logo: PureStorageLogo, alt: "Pure Storage", url: "https://www.purestorage.com/" },
+    { name: "Hitachi Vantara", logo: HitachiLogo, alt: "Hitachi Vantara", url: "https://www.hitachivantara.com/"},
+    { name: "IBM", logo: IBMLogo, alt: "IBM", url: "https://www.ibm.com/" },
+    { name: "Dell EMC", logo: DellEMCLogo, alt: "Dell EMC", url: "https://www.dell.com/"},
+    { name: "NetApp", logo: NetAppLogo, alt: "NetApp", url: "https://www.netapp.com/"},
+    { name: "Google (GCP)", logo: GCPLogo, alt: "GCP", url: "https://cloud.google.com/"},
+    { name: "Amazon (AWS)", logo: AWSLogo, alt: "AWS", url: "https://aws.amazon.com/"},
+    { name: "Broadcom", logo: BroadcomLogo, alt: "Broadcom", url: "https://www.broadcom.com/info/vmware"},
+    { name: "Microsoft Azure", logo: AzureLogo, alt: "Azure", url: "https://azure.microsoft.com/"},
   ];
 
   // Animation variants
@@ -1434,8 +1442,10 @@ export default function StorageMigration() {
             viewport={{ once: true }}
           >
             {vendorLogos.map((vendor, index) => (
-              <motion.div
+              <motion.a
                 key={index}
+                href={vendor.url}
+                target="_blank"
                 className="group cursor-pointer"
                 variants={{
                   initial: { opacity: 0, scale: 0.8 },
@@ -1453,7 +1463,7 @@ export default function StorageMigration() {
                 <p className="text-center text-gray-400 text-sm mt-4 group-hover:text-yellow-400 transition-colors duration-300 font-medium">
                   {vendor.name}
                 </p>
-              </motion.div>
+              </motion.a>
             ))}
           </motion.div>
 
