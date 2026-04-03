@@ -259,7 +259,8 @@ export default function SupportAsAService() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <Button 
-              variant="primary" 
+              variant="primary"
+              onClick={openModal} 
               size="lg"
               className="bg-blue-400 hover:bg-blue-500 text-blue-900 font-semibold px-8 py-4 text-lg"
             >
