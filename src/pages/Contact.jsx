@@ -2,10 +2,10 @@ import Button from '../components/common/button';
 import React, { useEffect, useState } from 'react';
 import contactHeroBg from '../assets/contact-hero-bg.jpg';
 import { motion } from 'framer-motion';
-import { 
-  HiPhone, 
-  HiMail, 
-  HiLocationMarker, 
+import {
+  HiPhone,
+  HiMail,
+  HiLocationMarker,
   HiOfficeBuilding,
   HiUser,
   HiBriefcase,
@@ -21,7 +21,7 @@ import useScrollToTop from '../hooks/useScrollToTop';
 
 export default function Contact() {
   const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '', jobTitle: '', organizationName: '', 
+    firstName: '', lastName: '', email: '', jobTitle: '', organizationName: '',
     phoneNumber: '', countryCode: '+1', industry: '', enquiryType: '', message: ''
   });
   const [errors, setErrors] = useState({});
@@ -82,7 +82,7 @@ export default function Contact() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -92,29 +92,29 @@ export default function Contact() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Form submitted:', {
-        ...form,
-        fullPhoneNumber: `${form.countryCode} ${form.phoneNumber}`,
-        source: 'Contact Page',
-        timestamp: new Date().toISOString()
+      const res = await fetch("https://compuzign-backend-w6fy.vercel.app/send-mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
       });
-      
-    setSubmitted(true);
-      
+
+      const data = await res.json();
+
+      if (data.success) {
+        setSubmitted(true);
+      }
     } catch (error) {
-      console.error('Form submission error:', error);
-    } finally {
-      setIsSubmitting(false);
+      console.error(error);
     }
+    setIsSubmitting(false);
   };
 
   // Animation variants
@@ -131,13 +131,13 @@ export default function Contact() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       {/* Hero Banner */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <img 
-          src={contactHeroBg} 
-          alt="Contact background" 
-          className="absolute inset-0 w-full h-full object-cover object-center z-0" 
+        <img
+          src={contactHeroBg}
+          alt="Contact background"
+          className="absolute inset-0 w-full h-full object-cover object-center z-0"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/70 to-indigo-900/80 z-10" />
-        
+
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10 z-20">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_30%,rgba(255,255,255,0.1)_50%,transparent_70%)]"></div>
@@ -152,17 +152,17 @@ export default function Contact() {
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 relative">
               Contact <span className="text-primary-bgYellow">Us</span>
-            <motion.div
+              <motion.div
                 className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-primary-bgYellow to-transparent rounded-full"
                 initial={{ scaleX: 0, originX: 0.5 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
-            />
-          </h1>
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
+              />
+            </h1>
             <p className="text-xl md:text-2xl font-medium mb-8 text-gray-200">
               Let's connect and drive your digital transformation to success
             </p>
-            
+
             {/* Quick Contact Options */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <motion.a
@@ -174,7 +174,7 @@ export default function Contact() {
                 <HiPhone className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                 Call Us Now
               </motion.a>
-              
+
               <motion.a
                 href="mailto:contactus@compuzign.com"
                 className="group flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-semibold rounded-lg hover:bg-white hover:text-slate-900 transition-all duration-300 hover:scale-105"
@@ -193,8 +193,8 @@ export default function Contact() {
       <div className="relative z-10 -mt-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
-        {/* Contact Form */}
+
+            {/* Contact Form */}
             <motion.div
               {...fadeInUp}
               className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl"
@@ -224,7 +224,7 @@ export default function Contact() {
                     We've received your request and our team will get back to you within 24 hours.
                   </p>
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => { setSubmitted(false), setForm({ firstName: '', lastName: '', email: '', jobTitle: '', organizationName: '', phoneNumber: '', countryCode: '+1', industry: '', enquiryType: '', message: '' }) }}
                     className="bg-primary-bgYellow hover:bg-yellow-400 text-black font-semibold py-3 px-8 rounded-lg transition-all duration-200"
                   >
                     Send Another Message
@@ -234,7 +234,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name Row */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         <HiUser className="inline w-4 h-4 mr-1" />
                         First Name*
@@ -245,9 +245,8 @@ export default function Contact() {
                         value={form.firstName}
                         onChange={handleChange}
                         placeholder="Enter your first name"
-                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${
-                          errors.firstName ? 'border-red-500' : 'border-white/20'
-                        }`}
+                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${errors.firstName ? 'border-red-500' : 'border-white/20'
+                          }`}
                       />
                       {errors.firstName && (
                         <p className="mt-1 text-sm text-red-400 flex items-center">
@@ -255,9 +254,9 @@ export default function Contact() {
                           {errors.firstName}
                         </p>
                       )}
-              </div>
+                    </div>
 
-              <div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         Last Name
                       </label>
@@ -270,11 +269,11 @@ export default function Contact() {
                         className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400"
                       />
                     </div>
-              </div>
+                  </div>
 
                   {/* Email & Company Row */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         <HiMail className="inline w-4 h-4 mr-1" />
                         Business Email*
@@ -285,9 +284,8 @@ export default function Contact() {
                         value={form.email}
                         onChange={handleChange}
                         placeholder="Enter your email"
-                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${
-                          errors.email ? 'border-red-500' : 'border-white/20'
-                        }`}
+                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${errors.email ? 'border-red-500' : 'border-white/20'
+                          }`}
                       />
                       {errors.email && (
                         <p className="mt-1 text-sm text-red-400 flex items-center">
@@ -295,9 +293,9 @@ export default function Contact() {
                           {errors.email}
                         </p>
                       )}
-              </div>
+                    </div>
 
-              <div>
+                    <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         <HiOfficeBuilding className="inline w-4 h-4 mr-1" />
                         Company*
@@ -308,9 +306,8 @@ export default function Contact() {
                         value={form.organizationName}
                         onChange={handleChange}
                         placeholder="Where do you work?"
-                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${
-                          errors.organizationName ? 'border-red-500' : 'border-white/20'
-                        }`}
+                        className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${errors.organizationName ? 'border-red-500' : 'border-white/20'
+                          }`}
                       />
                       {errors.organizationName && (
                         <p className="mt-1 text-sm text-red-400 flex items-center">
@@ -319,10 +316,10 @@ export default function Contact() {
                         </p>
                       )}
                     </div>
-              </div>
+                  </div>
 
                   {/* Job Title */}
-              <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       <HiBriefcase className="inline w-4 h-4 mr-1" />
                       Job Title*
@@ -333,9 +330,8 @@ export default function Contact() {
                       value={form.jobTitle}
                       onChange={handleChange}
                       placeholder="Enter your job title"
-                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${
-                        errors.jobTitle ? 'border-red-500' : 'border-white/20'
-                      }`}
+                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${errors.jobTitle ? 'border-red-500' : 'border-white/20'
+                        }`}
                     />
                     {errors.jobTitle && (
                       <p className="mt-1 text-sm text-red-400 flex items-center">
@@ -343,10 +339,10 @@ export default function Contact() {
                         {errors.jobTitle}
                       </p>
                     )}
-              </div>
+                  </div>
 
                   {/* Phone Number */}
-              <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       <HiPhone className="inline w-4 h-4 mr-1" />
                       Phone*
@@ -363,16 +359,15 @@ export default function Contact() {
                             {flag} {code}
                           </option>
                         ))}
-                </select>
+                      </select>
                       <input
                         type="tel"
                         name="phoneNumber"
                         value={form.phoneNumber}
                         onChange={handleChange}
                         placeholder="Enter your phone number"
-                        className={`flex-1 px-4 py-3 bg-white/10 border rounded-r-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${
-                          errors.phoneNumber ? 'border-red-500' : 'border-white/20'
-                        }`}
+                        className={`flex-1 px-4 py-3 bg-white/10 border rounded-r-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white placeholder-gray-400 ${errors.phoneNumber ? 'border-red-500' : 'border-white/20'
+                          }`}
                       />
                     </div>
                     {errors.phoneNumber && (
@@ -381,10 +376,10 @@ export default function Contact() {
                         {errors.phoneNumber}
                       </p>
                     )}
-              </div>
+                  </div>
 
                   {/* Industry */}
-              <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       <HiGlobe className="inline w-4 h-4 mr-1" />
                       Industry*
@@ -393,9 +388,8 @@ export default function Contact() {
                       name="industry"
                       value={form.industry}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white ${
-                        errors.industry ? 'border-red-500' : 'border-white/20'
-                      }`}
+                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white ${errors.industry ? 'border-red-500' : 'border-white/20'
+                        }`}
                     >
                       <option value="" className="bg-slate-800">Select your industry</option>
                       {industries.map(industry => (
@@ -408,7 +402,7 @@ export default function Contact() {
                         {errors.industry}
                       </p>
                     )}
-              </div>
+                  </div>
 
                   {/* Enquiry Type */}
                   <div>
@@ -419,9 +413,8 @@ export default function Contact() {
                       name="enquiryType"
                       value={form.enquiryType}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white ${
-                        errors.enquiryType ? 'border-red-500' : 'border-white/20'
-                      }`}
+                      className={`w-full px-4 py-3 bg-white/10 border rounded-lg focus:ring-2 focus:ring-primary-bgYellow focus:border-transparent transition-all text-white ${errors.enquiryType ? 'border-red-500' : 'border-white/20'
+                        }`}
                     >
                       <option value="" className="bg-slate-800">Select enquiry type</option>
                       {enquiryTypes.map(type => (
@@ -433,8 +426,8 @@ export default function Contact() {
                         <HiExclamationCircle className="w-4 h-4 mr-1" />
                         {errors.enquiryType}
                       </p>
-          )}
-        </div>
+                    )}
+                  </div>
 
                   {/* Message */}
                   <div>
@@ -473,8 +466,8 @@ export default function Contact() {
 
                   {/* Privacy Notice */}
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    By clicking Submit, I agree to the use of my personal data in accordance with 
-                    CompuZign Privacy Notice. CompuZign will not sell, trade, lease, or rent your 
+                    By clicking Submit, I agree to the use of my personal data in accordance with
+                    CompuZign Privacy Notice. CompuZign will not sell, trade, lease, or rent your
                     personal data to third parties.
                   </p>
                 </form>
@@ -482,46 +475,46 @@ export default function Contact() {
             </motion.div>
 
             {/* Contact Information */}
-          <motion.div
+            <motion.div
               {...fadeInUp}
               transition={{ delay: 0.2 }}
               className="space-y-8"
             >
               {/* Headquarters */}
               <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl">
-              <div className="flex items-center mb-6">
+                <div className="flex items-center mb-6">
                   <div className="p-4 bg-primary-bgYellow rounded-2xl mr-4">
                     <HiLocationMarker className="w-8 h-8 text-black" />
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-white">Headquarters</h3>
                     <p className="text-primary-bgYellow font-medium">Mandeville, JM</p>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex items-start">
+
+                <div className="space-y-4">
+                  <div className="flex items-start">
                     <HiLocationMarker className="w-5 h-5 text-primary-bgYellow flex-shrink-0 mt-1" />
                     <div className="ml-3">
                       <p className="text-gray-300 font-medium">Mandeville, Jamaica</p>
                       <p className="text-gray-300 font-medium">IT Services and IT Consulting</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center">
                     <HiPhone className="w-5 h-5 text-primary-bgYellow flex-shrink-0" />
                     <a href="tel:+19046852138" className="ml-3 text-white font-medium hover:text-primary-bgYellow transition-colors">
                       +1 (904) 685-2138
                     </a>
-                </div>
-                
-                <div className="flex items-center">
+                  </div>
+
+                  <div className="flex items-center">
                     <HiMail className="w-5 h-5 text-primary-bgYellow flex-shrink-0" />
                     <a href="mailto:contactus@compuzign.com" className="ml-3 text-white font-medium hover:text-primary-bgYellow transition-colors">
                       contactus@compuzign.com
                     </a>
                   </div>
-                  
+
                   <div className="mt-4 p-3 bg-primary-bgYellow/10 rounded-lg border border-primary-bgYellow/20">
                     <p className="text-primary-bgYellow font-semibold text-sm">
                       Founded 1998 • 11-50 employees
@@ -533,7 +526,7 @@ export default function Contact() {
               {/* Quick Contact Options */}
               <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl">
                 <h3 className="text-2xl font-bold text-white mb-6">Quick Contact</h3>
-                
+
                 <div className="space-y-4">
                   <motion.a
                     href="tel:+19046852138"
@@ -578,13 +571,13 @@ export default function Contact() {
                     <div>
                       <p className="text-white font-semibold">Customer Support</p>
                       <p className="text-gray-400 text-sm">Existing customers</p>
-                </div>
+                    </div>
                     <HiArrowRight className="w-5 h-5 text-gray-400 ml-auto group-hover:text-primary-bgYellow group-hover:translate-x-1 transition-all" />
                   </motion.a>
                 </div>
               </div>
             </motion.div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
