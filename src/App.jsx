@@ -1,41 +1,44 @@
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import RootLayouts from "./components/layouts/RootLayouts";
-import PageNotFound from "./pages/PageNotFound";
-import Home from "./pages/Home";
-import ExtendedThreatDetection from "./pages/ExtendedThreatDetection";
-import DisasterRecovery from "./pages/DisasterRecovery";
-import PrivilegedAccessStrategies from "./pages/PrivilegedAccessStrategies";
-import VulnerabilityAssessment from "./pages/VulnerabilityAssessment";
-import RansomwareResponse from "./pages/RansomwareResponse";
-import CyberRecoveryMonitoring from "./pages/CyberRecoveryMonitoring";
-import StorageMigration from "./pages/StorageMigration";
-import DataDrivenConsulting from "./pages/DataDrivenConsulting";
-import Careers from "./pages/Careers";
-import JobDetail from "./pages/JobDetail";
-import ComputeMigration from "./pages/ComputeMigration";
-import CloudMigration from "./pages/CloudMigration";
-import AIInfrastructureHPC from "./pages/AIInfrastructureHPC";
-import ApplicationManager from "./pages/ApplicationManager";
-import ApplicationModernization from "./pages/ApplicationModernization";
-import IntelligentAutomation from "./pages/IntelligentAutomation";
-import CostOptimization from "./pages/CostOptimization";
-import CloudTransformation from "./pages/CloudTransformation";
-import MonitoringAutomation from "./pages/MonitoringAutomation";
-import NetworkOperationsCenter from "./pages/NetworkOperationsCenter";
-import SecurityOperationsCenter from "./pages/SecurityOperationsCenter";
-import CyberResilience from "./pages/CyberResilience";
-import MobilityManagement from "./pages/MobilityManagement";
-import ManagedServices from "./pages/ManagedServices";
-import Contact from "./pages/Contact";
-import RaaS from "./pages/RaaS";
-import SupportAsAService from "./pages/SupportAsAService";
-import Partner from "./pages/Partner";
-import CaseStudies from "./pages/CaseStudies";
-import CaseStudyDetail from "./pages/CaseStudyDetail";
-import About from "./pages/About";
-import OurLeaders from "./pages/OurLeaders";
 
 function App() {
+  const Home = lazy(() => import("./pages/Home"));
+  const About = lazy(() => import("./pages/About"));
+  const CyberRecoveryMonitoring = lazy(() => import("./pages/CyberRecoveryMonitoring"));
+  const ExtendedThreatDetection = lazy(() => import("./pages/ExtendedThreatDetection"));
+  const DisasterRecovery = lazy(() => import("./pages/DisasterRecovery"));
+  const PrivilegedAccessStrategies = lazy(() => import("./pages/PrivilegedAccessStrategies"));
+  const RansomwareResponse = lazy(() => import("./pages/RansomwareResponse"));
+  const VulnerabilityAssessment = lazy(() => import("./pages/VulnerabilityAssessment"));
+  const StorageMigration = lazy(() => import("./pages/StorageMigration"));
+  const DataDrivenConsulting = lazy(() => import("./pages/DataDrivenConsulting"));
+  const Careers = lazy(() => import("./pages/Careers"));
+  const JobDetail = lazy(() => import("./pages/JobDetail"));
+  const ComputeMigration = lazy(() => import("./pages/ComputeMigration"));
+  const CloudMigration = lazy(() => import("./pages/CloudMigration"));
+  const AIInfrastructureHPC = lazy(() => import("./pages/AIInfrastructureHPC"));
+  const ApplicationManager = lazy(() => import("./pages/ApplicationManager"));
+  const ApplicationModernization = lazy(() => import("./pages/ApplicationModernization"));
+  const IntelligentAutomation = lazy(() => import("./pages/IntelligentAutomation"));
+  const CostOptimization = lazy(() => import("./pages/CostOptimization"));
+  const CloudTransformation = lazy(() => import("./pages/CloudTransformation"));
+  const MonitoringAutomation = lazy(() => import("./pages/MonitoringAutomation"));
+  const NetworkOperationsCenter = lazy(() => import("./pages/NetworkOperationsCenter"));
+  const SecurityOperationsCenter = lazy(() => import("./pages/SecurityOperationsCenter"));
+  const CyberResilience = lazy(() => import("./pages/CyberResilience"));
+  const MobilityManagement = lazy(() => import("./pages/MobilityManagement"));
+  const ManagedServices = lazy(() => import("./pages/ManagedServices"));
+  const Contact = lazy(() => import("./pages/Contact"));
+  const RaaS = lazy(() => import("./pages/RaaS"));
+  const SupportAsAService = lazy(() => import("./pages/SupportAsAService"));
+  const Partner = lazy(() => import("./pages/Partner"));
+  const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+  const CaseStudyDetail = lazy(() => import("./pages/CaseStudyDetail"));
+  const OurLeaders = lazy(() => import("./pages/OurLeaders"));
+  const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<RootLayouts />}>
@@ -80,7 +83,11 @@ function App() {
     }
   )
 
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 }
 
 export default App;
