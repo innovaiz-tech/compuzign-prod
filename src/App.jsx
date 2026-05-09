@@ -36,6 +36,7 @@ function App() {
   const CaseStudies = lazy(() => import("./pages/CaseStudies"));
   const CaseStudyDetail = lazy(() => import("./pages/CaseStudyDetail"));
   const OurLeaders = lazy(() => import("./pages/OurLeaders"));
+  const GetAQuote = lazy(() => import("./pages/GetAQuote"));
   const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 
@@ -75,6 +76,7 @@ function App() {
         <Route path='/case-studies' element={<CaseStudies />} />
         <Route path='/case-studies/:slug' element={<CaseStudyDetail />} />
         <Route path='/our-leaders' element={<OurLeaders />} />
+        <Route path='/get-a-quote' element={<GetAQuote />} />
         <Route path='*' element={<PageNotFound />} />
       </Route>
     ),

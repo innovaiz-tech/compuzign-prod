@@ -103,190 +103,235 @@ export default function RateCard() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-xl shadow w-full max-w-lg">
-        <h1 className="text-xl font-bold mb-4 text-center">
-          Storage as a Service
-        </h1>
-
-        {/* Dynamic dropdowns */}
-        {storage.fields.map((field) => (
-          <div key={field.id} className="mb-4">
-            <label className="block mb-1 font-medium">{field.label}</label>
-
-            <select
-              className="w-full border p-2 rounded"
-              onChange={(e) => handleChange(field.id, e.target.value)}
-              value={
-                values[field.id]
-                  ? field.opts.indexOf(values[field.id])
-                  : 0
-              }
-            >
-              {field.opts.map((opt, i) => (
-                <option key={i} value={i}>
-                  {opt.t}
-                </option>
-              ))}
-            </select>
+    <div className="min-h-screen bg-slate-100 p-6">
+      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.8fr_1fr]">
+        <section className="rounded-[2rem] bg-white p-8 shadow-[0_28px_80px_rgba(15,23,42,0.08)] ring-1 ring-slate-200">
+          <div className="mb-8 flex flex-col gap-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-primary-bgYellow">Rate card calculator</p>
+            <h1 className="text-3xl font-semibold text-slate-950">Storage as a Service</h1>
+            <p className="max-w-2xl text-slate-500">
+              Choose your storage type, capacity, and redundancy level to preview a tailored monthly storage quote.
+            </p>
           </div>
-        ))}
 
-        {/* Rate */}
-        {rate && (
-          <div className="bg-blue-100 text-center p-3 rounded mb-3">
-            Price: ${rate}
-          </div>
-        )}
+          <div className="grid gap-6">
+            {storage.fields.map((field) => (
+              <div key={field.id} className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <div className="flex items-center justify-between gap-4">
+                  <label className="text-sm font-semibold text-slate-900">{field.label}</label>
+                  {field.id === 'type' ? (
+                    <span className="rounded-full bg-primary-bgYellow/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-primary-bgYellow">
+                      {field.opts.length - 1} options
+                    </span>
+                  ) : null}
+                </div>
 
-        {/* Quantity */}
-        {rate && (
-          <div className="flex justify-center items-center gap-4 mb-3">
-            <button
-              disabled={qty === 1}
-              onClick={() => setQty(qty - 1)}
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              -
-            </button>
-
-            <span className="font-bold">{qty}</span>
-
-            <button
-              disabled={qty === 10}
-              onClick={() => setQty(qty + 1)}
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              +
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={addToCart}
-          disabled={!rate}
-          className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
-        >
-          Add to Cart
-        </button>
-
-        {/* Cart */}
-        <div className="mt-4">
-          {cart.map((item, i) => (
-            <div key={i} className="flex justify-between text-sm mb-2">
-              <span>
-                {item.values.type?.t} / {item.values.cap?.t}
-              </span>
-              <span>${item.total}</span>
-            </div>
-          ))}
-        </div>
-
-        {cart.length > 0 && (
-          <button
-            onClick={submit}
-            className="w-full mt-4 bg-green-600 text-white py-2 rounded"
-          >
-            Generate Quote (${totalSum})
-          </button>
-        )}
-      </div>
-
-      {/* Popup */}
-{show && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 overflow-auto">
-    <div className="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6">
-
-      {/* Header */}
-      <h2 className="text-2xl font-bold mb-4">Cost Calculator</h2>
-
-      {/* Client Info */}
-      <div className="text-sm mb-4 space-y-1">
-        <p><strong>Company:</strong> Client Company Name</p>
-        <p><strong>Contact:</strong> Contact Person</p>
-        <p><strong>Email:</strong> email@company.com</p>
-        <p><strong>Phone:</strong> +1 (000) 000-0000</p>
-      </div>
-
-      {/* Table */}
-      <div className="border rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-100 text-left">
-            <tr>
-              <th className="p-2">#</th>
-              <th className="p-2">Service Description</th>
-              <th className="p-2">Qty</th>
-              <th className="p-2">Unit/Mo</th>
-              <th className="p-2">Monthly</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {cart.map((item, i) => (
-              <tr key={i} className="border-t">
-                <td className="p-2">{i + 1}</td>
-
-                <td className="p-2">
-                  <div className="font-medium">Bare Metal Servers</div>
-                  <div className="text-xs text-gray-600">
-                    {item.values.type?.t} · {item.values.cap?.t} · {item.values.red?.t}
-                  </div>
-                </td>
-
-                <td className="p-2">{item.qty}</td>
-                <td className="p-2">${item.rate.toFixed(2)}</td>
-                <td className="p-2">${item.total.toFixed(2)}</td>
-              </tr>
+                <select
+                  className="w-full rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-bgYellow focus:ring-2 focus:ring-primary-bgYellow/20"
+                  onChange={(e) => handleChange(field.id, e.target.value)}
+                  value={values[field.id] ? field.opts.indexOf(values[field.id]) : 0}
+                >
+                  {field.opts.map((opt, i) => (
+                    <option key={i} value={i}>
+                      {opt.t}
+                    </option>
+                  ))}
+                </select>
+              </div>
             ))}
-          </tbody>
-        </table>
+
+            <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
+              <div className="rounded-3xl border border-primary-bgYellow/30 bg-primary-bgYellow/5 p-5">
+                <p className="text-xs uppercase tracking-[0.3em] text-primary-bgYellow">Estimated monthly rate</p>
+                <p className="mt-4 text-4xl font-semibold text-slate-950">{rate ? `$${rate.toLocaleString()}` : "—"}</p>
+                <p className="mt-2 text-sm text-slate-500">
+                  This estimate updates automatically when all selections are complete.
+                </p>
+              </div>
+
+              {rate && (
+                <div className="rounded-3xl border border-slate-200 bg-white p-5">
+                  <p className="text-sm text-slate-500">Quantity</p>
+                  <div className="mt-3 flex items-center gap-3 rounded-3xl border border-slate-200 bg-slate-100 px-3 py-2">
+                    <button
+                      disabled={qty === 1}
+                      onClick={() => setQty(qty - 1)}
+                      className="h-11 w-11 rounded-2xl bg-white text-lg font-semibold text-slate-900 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      −
+                    </button>
+                    <div className="min-w-[3rem] text-center text-lg font-semibold text-slate-900">{qty}</div>
+                    <button
+                      disabled={qty === 10}
+                      onClick={() => setQty(qty + 1)}
+                      className="h-11 w-11 rounded-2xl bg-white text-lg font-semibold text-slate-900 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={addToCart}
+              disabled={!rate}
+              className="w-full rounded-3xl bg-primary-bgYellow px-6 py-4 text-base font-semibold text-slate-950 shadow-sm transition hover:bg-primary-DEFAULT disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Add to cart
+            </button>
+
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+              <p className="text-sm font-semibold text-slate-900">How it works</p>
+              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                <li>• Select your storage type, capacity, and redundancy.</li>
+                <li>• Review the estimated monthly rate immediately.</li>
+                <li>• Add multiple configurations to build a comprehensive quote.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <aside className="rounded-[2rem] bg-slate-950 p-8 text-slate-100 shadow-[0_28px_80px_rgba(15,23,42,0.25)]">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-primary-bgYellow">Quote summary</p>
+              <h2 className="text-2xl font-semibold">Build your quote</h2>
+            </div>
+            <div className="rounded-full bg-slate-800 px-3 py-1 text-xs uppercase tracking-[0.25em] text-slate-300">
+              {cart.length} item{cart.length !== 1 ? "s" : ""}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {cart.length === 0 ? (
+              <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-5 text-sm text-slate-400">
+                Add a configuration to see the quote preview and total monthly commitment.
+              </div>
+            ) : (
+              cart.map((item, index) => (
+                <div key={index} className="rounded-3xl border border-slate-800 bg-slate-900/90 p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-100">{item.values.type?.t}</p>
+                      <p className="mt-1 text-sm text-slate-400">{item.values.cap?.t} · {item.values.red?.t}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-base font-semibold text-primary-bgYellow">${item.total.toLocaleString()}</p>
+                      <p className="text-xs text-slate-500">{item.qty} unit{item.qty !== 1 ? "s" : ""}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {cart.length > 0 && (
+            <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/90 p-6">
+              <div className="flex items-center justify-between text-sm text-slate-400">
+                <span>Monthly commitment</span>
+                <span className="font-semibold text-slate-100">${totalSum.toLocaleString()}</span>
+              </div>
+              <button
+                onClick={submit}
+                className="mt-5 w-full rounded-3xl bg-primary-bgYellow px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-DEFAULT"
+              >
+                Generate quote document
+              </button>
+            </div>
+          )}
+        </aside>
       </div>
 
-      {/* Totals */}
-      <div className="mt-4 text-right space-y-1">
-        <div>
-          <span className="font-medium">Subtotal: </span>
-          ${totalSum.toFixed(2)}
+      {show && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-4xl overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-950 text-slate-100 shadow-2xl">
+            <div className="flex flex-col gap-3 border-b border-slate-800 bg-slate-900 p-6 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-primary-bgYellow">Quote document</p>
+                <h3 className="mt-2 text-3xl font-semibold">Storage Infrastructure Quote</h3>
+              </div>
+              <div className="space-y-1 text-sm text-slate-400">
+                <p>Quote #{Math.floor(Math.random() * 9000 + 1000)}</p>
+                <p>Billing cycle: Monthly</p>
+                <p>{cart.length} item{cart.length !== 1 ? "s" : ""}</p>
+              </div>
+            </div>
+
+            <div className="grid gap-5 p-6 lg:grid-cols-[1fr_1fr]">
+              <div className="rounded-3xl bg-slate-900 p-5">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Client</p>
+                <p className="mt-3 font-semibold text-slate-100">Client Company Name</p>
+                <p className="mt-1 text-sm text-slate-400">Contact Person</p>
+                <p className="mt-1 text-sm text-slate-400">email@company.com</p>
+                <p className="mt-1 text-sm text-slate-400">+1 (000) 000-0000</p>
+              </div>
+              <div className="rounded-3xl bg-slate-900 p-5">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Quote details</p>
+                <div className="mt-4 space-y-2 text-sm text-slate-400">
+                  <div className="flex items-center justify-between">
+                    <span>Subtotal</span>
+                    <span>${totalSum.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Estimated tax</span>
+                    <span>$0.00</span>
+                  </div>
+                  <div className="flex items-center justify-between font-semibold text-slate-100">
+                    <span>Monthly total</span>
+                    <span>${totalSum.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-3xl border-t border-slate-800 bg-slate-900 p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-slate-300">
+                  <thead className="border-b border-slate-800 text-slate-400">
+                    <tr>
+                      <th className="px-4 py-3">#</th>
+                      <th className="px-4 py-3">Service</th>
+                      <th className="px-4 py-3">Qty</th>
+                      <th className="px-4 py-3">Unit / Mo</th>
+                      <th className="px-4 py-3 text-right">Monthly</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cart.map((item, index) => (
+                      <tr key={index} className="border-b border-slate-800">
+                        <td className="px-4 py-3">{index + 1}</td>
+                        <td className="px-4 py-3">
+                          <div className="font-medium text-slate-100">{item.values.type?.t}</div>
+                          <div className="text-xs text-slate-500">{item.values.cap?.t} · {item.values.red?.t}</div>
+                        </td>
+                        <td className="px-4 py-3">{item.qty}</td>
+                        <td className="px-4 py-3">${item.rate.toFixed(2)}</td>
+                        <td className="px-4 py-3 text-right text-primary-bgYellow">${item.total.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 border-t border-slate-800 bg-slate-950 p-6 lg:flex-row lg:items-center lg:justify-between">
+              <button
+                onClick={close}
+                className="w-full rounded-3xl border border-slate-800 bg-slate-900 px-5 py-3 text-sm text-slate-100 transition hover:bg-slate-800 lg:w-auto"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="w-full rounded-3xl bg-primary-bgYellow px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-primary-DEFAULT lg:w-auto"
+              >
+                Print / Save PDF
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="text-lg font-bold">
-          Monthly Total: ${totalSum.toFixed(2)}
-        </div>
-      </div>
-
-      {/* Terms */}
-      <div className="mt-6 text-xs text-gray-600 space-y-1">
-        <h3 className="font-semibold text-sm mb-1">Terms & Conditions</h3>
-        <p>1. All prices in USD, excluding applicable taxes.</p>
-        <p>2. Services billed in advance on the 1st of each calendar month.</p>
-        <p>3. One-time setup fees (where applicable) invoiced separately before activation.</p>
-        <p>4. Network bandwidth measured as 95th percentile over the billing period.</p>
-        <p>5. Storage overages billed at 1.5× the base rate.</p>
-        <p>6. SLA credits limited to 100% of the affected service monthly charge.</p>
-        <p>7. Minimum term: 1 month. Annual commitments receive 5% discount.</p>
-        <p>8. Cancellation requires 30 days written notice.</p>
-        <p>9. Pricing may change with 90 days notice.</p>
-        <p>10. Quote valid for 30 days.</p>
-      </div>
-
-      {/* Actions */}
-      <div className="flex justify-end gap-3 mt-6">
-        <button
-          onClick={close}
-          className="px-4 py-2 bg-gray-700 text-white rounded-lg"
-        >
-          Close
-        </button>
-
-        <button
-          onClick={() => window.print()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-        >
-          Print / Save PDF
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </div>
   );
 }
