@@ -47,7 +47,6 @@ import IBMLogo from '../assets/cloud-vendors/ibm.svg';
 import HitachiLogo from '../assets/cloud-vendors/hitachi-3.svg';
 import DXCLogo from '../assets/cloud-vendors/dxc-technology-1.svg';
 import PureStorageLogo from '../assets/cloud-vendors/pure-storage-seeklogo.png';
-import RateCard from './RateCard';
 
 /**
  * StorageMigration Component - Modernize, Migrate, and Move Without Disruption
@@ -504,10 +503,6 @@ export default function StorageMigration() {
           </div>
         </div>
       </section>
-
-      <div>
-        <RateCard />
-      </div>
 
       {/* 2. CHOOSE THE RIGHT MIGRATION APPROACH SECTION - Amber Background */}
       <section className="py-20 lg:py-28 bg-gradient-to-br from-amber-50 via-amber-100/30 to-yellow-50/20 relative overflow-hidden">
