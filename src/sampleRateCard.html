@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfraCore — IaaS Rate Card & Cost Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060b08;--bg2:#0c1410;--bg3:#111c15;--bg4:#162018;
+  --inp:#070d0a;--acc:#00d68f;--acc2:#00f5a0;--accd:#005e3a;
+  --accs:rgba(0,214,143,.07);--accg:rgba(0,214,143,.18);
+  --tx:#dfe9e1;--tx2:#92a89b;--tx3:#4a6053;
+  --bd:#152a1e;--bd2:#1d3a28;--red:#ff4757;
+  --r:7px;--rl:10px;
+  --ff:'Space Grotesk',sans-serif;--fb:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--tx);line-height:1.55;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(0,214,143,.025) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;z-index:0}
+
+/* ── HEADER ── */
+header{position:relative;z-index:10;padding:16px 24px;border-bottom:1px solid var(--bd);background:linear-gradient(180deg,rgba(0,214,143,.025),transparent)}
+.hdr{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ic{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--acc),var(--accd));display:flex;align-items:center;justify-content:center;font-size:16px;color:#060b08}
+.logo h1{font-family:var(--ff);font-size:18px;font-weight:700;letter-spacing:-.3px}
+.logo h1 span{color:var(--acc)}
+.hdr-r{display:flex;gap:12px;font-size:10.5px;color:var(--tx3);align-items:center}
+.hdr-r span{display:flex;align-items:center;gap:4px}
+.hdr-r i{color:var(--acc);font-size:6px}
+
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:10;max-width:1500px;margin:0 auto;display:grid;grid-template-columns:1fr 390px;gap:0;min-height:calc(100vh - 66px)}
+.left{padding:16px 16px 16px 24px;overflow-y:auto;max-height:calc(100vh - 66px)}
+.right{border-left:1px solid var(--bd);background:var(--bg2);padding:18px;position:sticky;top:0;max-height:calc(100vh - 66px);overflow-y:auto;display:flex;flex-direction:column}
+
+/* ── RATE CARD TABLE ── */
+.rc-wrap{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rl);margin-bottom:16px;overflow:hidden}
+.rc-head{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.rc-head:hover{background:var(--bg4)}
+.rc-title{font-family:var(--ff);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--acc);display:flex;align-items:center;gap:7px}
+.rc-title i{font-size:13px}
+.rc-badge{font-size:10px;color:var(--tx3);background:var(--bg2);padding:3px 8px;border-radius:20px;border:1px solid var(--bd)}
+.rc-body{max-height:500px;overflow:hidden;transition:max-height .4s ease}
+.rc-body.shut{max-height:0}
+.rc-scroll{overflow-x:auto;padding:0}
+.rc-tbl{width:100%;border-collapse:collapse;font-size:11.5px;min-width:680px}
+.rc-tbl thead{background:var(--bg2)}
+.rc-tbl th{padding:8px 14px;text-align:left;font-weight:700;color:var(--tx2);font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.rc-tbl td{padding:7px 14px;border-bottom:1px solid rgba(255,255,255,.02);color:var(--tx)}
+.rc-tbl tr:hover td{background:rgba(0,214,143,.02)}
+.rc-tbl .rc-price{font-family:var(--ff);font-weight:700;color:var(--acc);white-space:nowrap;text-align:right}
+.rc-tbl .rc-cat{font-weight:600;color:var(--tx2);white-space:nowrap}
+.rc-tbl .rc-cat i{margin-right:5px;color:var(--acc);font-size:10px;width:14px;text-align:center}
+
+/* ── CATEGORY LABEL ── */
+.clbl{font-family:var(--ff);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--tx3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.clbl::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* ── SERVICE SECTION ── */
+.svc{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rl);margin-bottom:6px;overflow:hidden;transition:border-color .2s}
+.svc:hover{border-color:var(--bd2)}
+.svc.open{border-color:rgba(0,214,143,.18)}
+.svc-hd{display:flex;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;gap:10px;transition:background .1s}
+.svc-hd:hover{background:var(--bg4)}
+.svc-ic{width:32px;height:32px;border-radius:7px;background:var(--accs);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:12px;flex-shrink:0}
+.svc.open .svc-ic{background:rgba(0,214,143,.14)}
+.svc-nm{font-family:var(--ff);font-size:13px;font-weight:600;flex:1}
+.svc-ds{font-size:10px;color:var(--tx3);margin-top:1px}
+.svc-ch{color:var(--tx3);font-size:9px;transition:transform .3s}
+.svc.open .svc-ch{transform:rotate(180deg)}
+.svc-bd{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.svc-bd.open{max-height:1000px}
+.svc-in{padding:2px 14px 14px}
+
+/* ── FIELDS ── */
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.fr.f1{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:2px}
+.fl{font-size:9.5px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.3px}
+select.cs{width:100%;padding:7px 28px 7px 9px;background:var(--inp);border:1px solid var(--bd);border-radius:var(--r);color:var(--tx);font-family:var(--fb);font-size:12px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%234a6053' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+select.cs:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--accs)}
+select.cs option{background:var(--bg3);color:var(--tx)}
+
+/* ── COST CALCULATOR BOX ── */
+.calc{background:linear-gradient(135deg,#050e09,#081510);border:1px solid var(--bd2);border-radius:var(--rl);margin-top:10px;overflow:hidden;position:relative}
+.calc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accg),transparent)}
+.calc-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(0,214,143,.04);border-bottom:1px solid var(--bd)}
+.calc-lbl{font-family:var(--ff);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--acc);display:flex;align-items:center;gap:6px}
+.calc-lbl i{font-size:12px}
+.calc-total{font-family:var(--ff);font-size:26px;font-weight:700;color:var(--acc);transition:color .15s}
+.calc-total.flash{animation:pflash .35s ease-out}
+@keyframes pflash{0%{color:#fff;text-shadow:0 0 20px var(--accg)}100%{color:var(--acc);text-shadow:none}}
+.calc-lines{padding:6px 14px}
+.cl{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,.02)}
+.cl:last-child{border-bottom:none}
+.cl-n{color:var(--tx2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;font-size:10.5px}
+.cl-v{font-family:var(--ff);font-weight:600;white-space:nowrap;font-size:11.5px}
+.cl-v.z{color:var(--tx3)}
+.cl-sep{height:1px;background:var(--bd);margin:4px 0}
+.cl-total{display:flex;justify-content:space-between;align-items:center;padding:5px 0 2px}
+.cl-total-n{font-family:var(--ff);font-size:11px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px}
+.cl-total-v{font-family:var(--ff);font-size:16px;font-weight:700;color:var(--acc)}
+.calc-empty{padding:14px;text-align:center;font-size:11px;color:var(--tx3);font-style:italic}
+.calc-bottom{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--bd);background:rgba(0,0,0,.15)}
+.qc{display:flex;align-items:center;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;flex-shrink:0}
+.qb{width:28px;height:28px;background:var(--inp);border:none;color:var(--tx2);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:background .1s,color .1s}
+.qb:hover{background:var(--accs);color:var(--acc)}
+.qi{width:34px;height:28px;background:var(--inp);border:none;border-left:1px solid var(--bd);border-right:1px solid var(--bd);color:var(--tx);font-family:var(--fb);font-size:12px;text-align:center;font-weight:700;-moz-appearance:textfield}
+.qi::-webkit-inner-spin-button,.qi::-webkit-outer-spin-button{-webkit-appearance:none}
+.btn-add{padding:7px 16px;background:var(--acc);color:#060b08;border:none;border-radius:var(--r);font-family:var(--ff);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:background .1s,transform .06s,box-shadow .12s;white-space:nowrap;flex-shrink:0}
+.btn-add:hover{background:var(--acc2);box-shadow:0 0 14px var(--accs)}
+.btn-add:active{transform:scale(.97)}
+.btn-add:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+
+/* ── SUMMARY PANEL ── */
+.sh{font-family:var(--ff);font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:1px}
+.sh i{color:var(--acc);font-size:12px}
+.ss{font-size:10px;color:var(--tx3);margin-bottom:12px}
+.se{text-align:center;padding:28px 14px;color:var(--tx3)}
+.se i{font-size:26px;margin-bottom:8px;display:block;opacity:.3}
+.se p{font-size:11.5px}
+.ql{flex:1;overflow-y:auto;min-height:50px;margin-bottom:10px}
+.qi-item{display:flex;align-items:flex-start;gap:8px;padding:8px 9px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:4px;animation:sIn .2s ease}
+@keyframes sIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.qi-b{flex:1;min-width:0}
+.qi-c{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--acc);margin-bottom:1px}
+.qi-d{font-size:10px;color:var(--tx2);line-height:1.3;word-break:break-word}
+.qi-q{font-size:9px;color:var(--tx3);margin-top:1px}
+.qi-p{font-family:var(--ff);font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.qi-x{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:9px;padding:2px;transition:color .1s;flex-shrink:0}
+.qi-x:hover{color:var(--red)}
+.dv{height:1px;background:var(--bd);margin:8px 0}
+.br{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.br label{font-size:9.5px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.3px;flex-shrink:0}
+.br select{flex:1;padding:5px 24px 5px 8px;background:var(--inp);border:1px solid var(--bd);border-radius:var(--r);color:var(--tx);font-family:var(--fb);font-size:11px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%234a6053' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer}
+.br select:focus{outline:none;border-color:var(--acc)}
+.dbg{font-size:9px;font-weight:700;color:var(--acc);background:var(--accs);padding:2px 6px;border-radius:20px;white-space:nowrap}
+.tot{margin-top:auto}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:2px 0;font-size:12px}
+.tr.s{color:var(--tx2)}
+.tr.d{color:var(--acc);font-size:11px}
+.tr.g{font-family:var(--ff);font-size:22px;font-weight:700;padding:8px 0 2px;border-top:2px solid var(--acc);margin-top:4px}
+.tr.g .v{color:var(--acc)}
+.tr.billed{font-size:10.5px;color:var(--tx3);padding-bottom:2px}
+.btn-g{width:100%;padding:11px;background:linear-gradient(135deg,var(--acc),var(--accd));color:#060b08;border:none;border-radius:var(--r);font-family:var(--ff);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:box-shadow .15s,transform .06s;margin-top:12px}
+.btn-g:hover{box-shadow:0 4px 20px var(--accs)}
+.btn-g:active{transform:scale(.98)}
+.btn-g:disabled{opacity:.25;cursor:not-allowed;box-shadow:none}
+.btn-c{width:100%;padding:8px;background:transparent;border:1px solid var(--bd);border-radius:var(--r);color:var(--tx3);font-family:var(--ff);font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:border-color .1s,color .1s;margin-top:5px}
+.btn-c:hover{border-color:var(--red);color:var(--red)}
+.tn{font-size:9px;color:var(--tx3);margin-top:10px;line-height:1.5;padding:8px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--bd)}
+
+/* ── TOAST ── */
+#ts{position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:5px}
+.t{padding:9px 14px;border-radius:var(--r);font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;box-shadow:0 6px 20px rgba(0,0,0,.4);animation:ti .2s ease,to .2s ease 2.2s forwards;max-width:300px}
+.t.ok{background:linear-gradient(135deg,#0b241a,#0f2a1b);border:1px solid rgba(0,214,143,.2);color:var(--tx)}
+.t.er{background:linear-gradient(135deg,#240b0e,#2a1116);border:1px solid rgba(255,71,87,.2);color:var(--tx)}
+.t i{font-size:12px}
+.t.ok i{color:var(--acc)}
+.t.er i{color:var(--red)}
+@keyframes ti{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes to{to{opacity:0;transform:translateX(20px)}}
+
+/* ── MODAL ── */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;backdrop-filter:blur(3px)}
+.mo.on{display:flex}
+.qd{background:#fff;color:#1a1a1a;width:100%;max-width:780px;border-radius:5px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.5);animation:mIn .2s ease}
+@keyframes mIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.qd-h{background:linear-gradient(135deg,#0a100d,#132a1c);padding:24px 28px;color:#fff;display:flex;justify-content:space-between;align-items:flex-start}
+.qd-b{font-family:var(--ff);font-size:18px;font-weight:700}
+.qd-b span{color:var(--acc)}
+.qd-m{text-align:right;font-size:11px;line-height:1.9;color:rgba(255,255,255,.65)}
+.qd-m strong{display:block;font-size:12px;color:#fff;margin-bottom:2px}
+.qd-body{padding:24px 28px}
+.qd-cl{margin-bottom:20px;padding:12px;background:#f8faf9;border:1px solid #e2e8e4;border-radius:4px;font-size:11px;color:#555;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.qd-cl b{color:#333}
+.qt{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:16px}
+.qt thead{background:#eef2ef}
+.qt th{padding:8px 9px;text-align:left;font-weight:700;color:#333;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #cdd5cf}
+.qt td{padding:8px 9px;border-bottom:1px solid #e6ebe7;vertical-align:top}
+.qt .rp,.qt .rt{text-align:right;white-space:nowrap}
+.qt .rq{text-align:center}
+.qt-i{display:flex;justify-content:flex-end;margin-bottom:18px}
+.qt-ii{width:240px}
+.qt-r{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;color:#555}
+.qt-r.gg{font-size:15px;font-weight:700;color:#0a100d;border-top:2px solid var(--acc);padding-top:7px;margin-top:3px}
+.qt-r.dd{color:var(--accd);font-size:11px}
+.qd-t{font-size:9px;color:#888;line-height:1.7;border-top:1px solid #e6ebe7;padding-top:12px}
+.qd-t h4{font-size:10px;color:#333;margin-bottom:4px}
+.qd-a{padding:12px 28px 20px;display:flex;gap:7px;justify-content:flex-end}
+.btn-p{padding:8px 20px;background:var(--acc);color:#060b08;border:none;border-radius:var(--r);font-family:var(--ff);font-size:10.5px;font-weight:700;cursor:pointer}
+.btn-p:hover{background:var(--acc2)}
+.btn-x{padding:8px 20px;background:#e6ebe7;color:#333;border:none;border-radius:var(--r);font-family:var(--ff);font-size:10.5px;font-weight:600;cursor:pointer}
+.btn-x:hover{background:#d0d8d3}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+@media(max-width:1100px){.wrap{grid-template-columns:1fr}.left{max-height:none;padding:14px}.right{border-left:none;border-top:1px solid var(--bd);position:static;max-height:none}}
+@media(max-width:600px){.fr{grid-template-columns:1fr}.svc-in{padding:2px 10px 10px}.qd-h{flex-direction:column;gap:12px;padding:18px 16px}.qd-body{padding:16px}.qd-cl{grid-template-columns:1fr}.qd-a{padding:10px 16px 16px}.qt{font-size:10px}.qt th,.qt td{padding:6px 5px}}
+@media print{body::before,body::after,header,.left,.right,#ts,.qd-a,.mo{display:none!important}.mo{display:block!important;position:static;background:none;padding:0;backdrop-filter:none}.qd{box-shadow:none;border-radius:0;max-width:100%;display:block!important}}
+</style>
+</head>
+<body>
+<div id="ts"></div>
+<header><div class="hdr"><div class="logo"><div class="logo-ic"><i class="fas fa-cube"></i></div><h1>Infra<span>Core</span></h1></div><div class="hdr-r"><span><i class="fas fa-circle"></i> IaaS Rate Card</span><span><i class="fas fa-circle"></i> Cost Calculator</span><span><i class="fas fa-circle"></i> FY 2025 · USD</span></div></div></header>
+<div class="wrap">
+<div class="left" id="lp"></div>
+<aside class="right">
+  <div class="sh"><i class="fas fa-receipt"></i> Quote Summary</div>
+  <div class="ss" id="cnt">0 items</div>
+  <div class="ql" id="ql"><div class="se" id="emp"><i class="fas fa-calculator"></i><p>Configure services and add them to build your quote</p></div></div>
+  <div class="br"><label>Billing</label><select id="bc"><option value="monthly">Monthly</option><option value="quarterly">Quarterly (5% off)</option><option value="semiannual">Semi-Annual (10% off)</option><option value="annual">Annual (15% off)</option></select><span class="dbg" id="dbdg" style="display:none"></span></div>
+  <div class="tot">
+    <div class="dv"></div>
+    <div class="tr s"><span>Monthly Subtotal</span><span id="sv">$0.00</span></div>
+    <div class="tr d" id="dr" style="display:none"><span id="dl"></span><span id="dv2"></span></div>
+    <div class="tr g"><span>Monthly Total</span><span class="v" id="gv">$0.00</span></div>
+    <div class="tr billed" id="blr" style="display:none"><span id="bll"></span><span id="blv"></span></div>
+    <button class="btn-g" id="bg" disabled>Generate Quote</button>
+    <button class="btn-c" id="bcl" style="display:none">Clear All</button>
+    <div class="tn"><i class="fas fa-info-circle" style="color:var(--acc);margin-right:3px"></i> Prices exclude taxes. Setup fees may apply for certain configs. Volume discounts for 10+ units. Valid through Dec 2025.</div>
+  </div>
+</aside>
+</div>
+<div class="mo" id="mo"><div class="qd" id="qdoc"></div></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   COMPLETE IaaS SERVICE CATALOG WITH PRICING
+   ═══════════════════════════════════════════════════════ */
+const S={
+  bareMetal:{
+    grp:'core',title:'Bare Metal Servers',icon:'fa-server',desc:'Dedicated physical servers with full root access',
+    rc:[
+      ['Entry — 8C / 32GB / 2×480GB SSD','$299/mo'],
+      ['Standard — 16C / 64GB / 2×960GB SSD','$499/mo'],
+      ['High Perf — 32C / 128GB / 4×960GB NVMe','$899/mo'],
+      ['Enterprise — 64C / 256GB / 8×1.92TB NVMe','$1,499/mo'],
+      ['GPU Compute — 32C / 128GB / 2×A100 80GB','$2,499/mo'],
+      ['Storage Optimized — 24C / 64GB / 12×8TB HDD','$699/mo'],
+    ],
+    fields:[
+      {id:'tier',label:'Server Configuration',f:1,opts:[
+        {t:'— Select —',p:0},{t:'Entry — 8C / 32GB / 2×480GB SSD',p:299},
+        {t:'Standard — 16C / 64GB / 2×960GB SSD',p:499},
+        {t:'High Perf — 32C / 128GB / 4×960GB NVMe',p:899},
+        {t:'Enterprise — 64C / 256GB / 8×1.92TB NVMe',p:1499},
+        {t:'GPU Compute — 32C / 128GB / 2×A100 80GB',p:2499},
+        {t:'Storage Optimized — 24C / 64GB / 12×8TB HDD',p:699}
+      ]},
+      {id:'os',label:'Operating System',opts:[
+        {t:'Ubuntu 22.04 LTS',p:0},{t:'CentOS Stream 9',p:0},{t:'Debian 12',p:0},
+        {t:'Rocky Linux 9',p:0},{t:'Windows Server 2022 Std',p:49},
+        {t:'Windows Server 2022 DC',p:99},{t:'RHEL 9',p:79},
+        {t:'SUSE Enterprise 15',p:69},{t:'VMware ESXi 8.0',p:149},{t:'Proxmox VE 8',p:0}
+      ]},
+      {id:'raid',label:'RAID Level',opts:[
+        {t:'RAID 1',p:0},{t:'RAID 5',p:0},{t:'RAID 6',p:0},{t:'RAID 10',p:49}
+      ]},
+      {id:'sla',label:'Hardware SLA',opts:[
+        {t:'Standard — Next Biz Day',p:0},{t:'Premium — 4-Hour Response',p:49},{t:'Critical — 2-Hour Response',p:99}
+      ]}
+    ]
+  },
+  network:{
+    grp:'core',title:'Network Services',icon:'fa-network-wired',desc:'Port speed, bandwidth, and IP allocations',
+    rc:[
+      ['1 Gbps Port','$49/mo'],['10 Gbps Port','$149/mo'],['25 Gbps Port','$299/mo'],['100 Gbps Port','$599/mo'],
+      ['Bandwidth 5 TB','$29/mo'],['Bandwidth 50 TB','$179/mo'],['Unlimited BW','$499/mo'],
+      ['/29 Block (5 IPs)','$9/mo'],['/26 Block (61 IPs)','$69/mo'],
+    ],
+    fields:[
+      {id:'port',label:'Port Speed',opts:[
+        {t:'— Select —',p:0},{t:'1 Gbps',p:49},{t:'10 Gbps',p:149},{t:'25 Gbps',p:299},{t:'100 Gbps',p:599}
+      ]},
+      {id:'bw',label:'Bandwidth Allowance',opts:[
+        {t:'1 TB/mo (Included)',p:0},{t:'5 TB/mo',p:29},{t:'10 TB/mo',p:49},
+        {t:'25 TB/mo',p:99},{t:'50 TB/mo',p:179},{t:'100 TB/mo',p:299},{t:'Unlimited',p:499}
+      ]},
+      {id:'ips',label:'IP Allocation',opts:[
+        {t:'/32 — 1 IP (Included)',p:0},{t:'/29 — 5 Usable',p:9},
+        {t:'/28 — 13 Usable',p:19},{t:'/27 — 29 Usable',p:39},{t:'/26 — 61 Usable',p:69}
+      ]}
+    ]
+  },
+  storage:{
+    grp:'core',title:'Storage as a Service',icon:'fa-hard-drive',desc:'Scalable block and object storage (consumption-based)',
+    mode:'perGB',
+    rc:[
+      ['HDD 7.2K SATA','$0.04/GB/mo'],['HDD 10K SAS','$0.06/GB/mo'],
+      ['SSD SATA','$0.10/GB/mo'],['SSD NVMe','$0.15/GB/mo'],['Object Storage (S3)','$0.02/GB/mo'],
+    ],
+    fields:[
+      {id:'type',label:'Storage Type',f:1,opts:[
+        {t:'— Select —',g:0},{t:'HDD — 7.2K SATA',g:0.04},{t:'HDD — 10K SAS',g:0.06},
+        {t:'SSD — SATA',g:0.10},{t:'SSD — NVMe',g:0.15},{t:'Object Storage (S3-Compatible)',g:0.02}
+      ]},
+      {id:'cap',label:'Capacity',opts:[
+        {t:'— Select —',c:0},{t:'500 GB',c:500},{t:'1 TB',c:1000},{t:'2 TB',c:2000},
+        {t:'5 TB',c:5000},{t:'10 TB',c:10000},{t:'25 TB',c:25000},
+        {t:'50 TB',c:50000},{t:'100 TB',c:100000}
+      ]},
+      {id:'red',label:'Redundancy',opts:[
+        {t:'Single — No Redundancy',m:1},{t:'Dual — RAID 1 Equivalent',m:2},
+        {t:'Erasure Coding (2+1)',m:1.5},{t:'Erasure Coding (4+2)',m:1.5},{t:'HA — Multi-AZ',m:2}
+      ]}
+    ]
+  },
+  backup:{
+    grp:'data',title:'Backup as a Service',icon:'fa-shield-halved',desc:'Automated backups with flexible retention (consumption-based)',
+    mode:'perGB',
+    rc:[
+      ['Weekly Backup','$0.02/GB/mo'],['Daily Backup','$0.03/GB/mo'],['Hourly Backup','$0.06/GB/mo'],['Continuous CDP','$0.08/GB/mo'],
+    ],
+    fields:[
+      {id:'freq',label:'Backup Frequency',f:1,opts:[
+        {t:'— Select —',g:0},{t:'Weekly',g:0.02},{t:'Daily',g:0.03},
+        {t:'Every 6 Hours',g:0.04},{t:'Hourly',g:0.06},{t:'Continuous (CDP)',g:0.08}
+      ]},
+      {id:'cap',label:'Backup Storage',opts:[
+        {t:'— Select —',c:0},{t:'500 GB',c:500},{t:'1 TB',c:1000},{t:'2 TB',c:2000},
+        {t:'5 TB',c:5000},{t:'10 TB',c:10000},{t:'25 TB',c:25000},{t:'50 TB',c:50000}
+      ]},
+      {id:'ret',label:'Retention Period',opts:[
+        {t:'7 Days',m:1},{t:'14 Days',m:1.5},{t:'30 Days',m:2},{t:'60 Days',m:3},
+        {t:'90 Days',m:4},{t:'180 Days',m:6},{t:'365 Days',m:10}
+      ]}
+    ]
+  },
+  draas:{
+    grp:'data',title:'Disaster Recovery as a Service',icon:'fa-tower-broadcast',desc:'Multi-region failover and recovery solutions',
+    rc:[
+      ['Cold Standby — Weekly Sync','$199/mo'],['Warm Standby — Daily Sync','$499/mo'],
+      ['Hot Standby — Real-time','$999/mo'],['Active-Active Multi-Region','$1,999/mo'],
+    ],
+    fields:[
+      {id:'tier',label:'DR Tier',f:1,opts:[
+        {t:'— Select —',p:0},{t:'Cold Standby — Weekly Sync / Manual Failover',p:199},
+        {t:'Warm Standby — Daily Sync / Semi-Auto Failover',p:499},
+        {t:'Hot Standby — Real-time Sync / Auto Failover',p:999},
+        {t:'Active-Active — Multi-Region Load Balanced',p:1999}
+      ]},
+      {id:'rto',label:'Recovery Time Objective',opts:[
+        {t:'24 Hours',p:0},{t:'8 Hours',p:49},{t:'4 Hours',p:99},{t:'1 Hour',p:199},{t:'15 Minutes (RPO < 5min)',p:399}
+      ]},
+      {id:'reg',label:'Target Region',opts:[
+        {t:'Same Region — Secondary AZ',p:0},{t:'US Cross-Region',p:99},{t:'EU Cross-Region',p:149},{t:'APAC Cross-Region',p:199}
+      ]}
+    ]
+  },
+  managed:{
+    grp:'ops',title:'Managed Services',icon:'fa-headset',desc:'Monitoring, patching, and operational support',
+    rc:[
+      ['Basic Monitoring','$99/mo'],['Advanced Monitoring (APM)','$199/mo'],
+      ['Managed OS','$149/mo'],['Fully Managed (OS+App+DB)','$399/mo'],['Managed Kubernetes','$499/mo'],
+    ],
+    fields:[
+      {id:'level',label:'Service Level',f:1,opts:[
+        {t:'— Select —',p:0},{t:'Basic Monitoring — Uptime & Resource Alerts',p:99},
+        {t:'Advanced Monitoring — APM + Log Analysis',p:199},
+        {t:'Managed OS — Patching, Hardening, Updates',p:149},
+        {t:'Fully Managed — OS + App Stack + Database',p:399},
+        {t:'Managed Kubernetes — Cluster Ops & Upgrades',p:499}
+      ]},
+      {id:'win',label:'Support Window',opts:[
+        {t:'8×5 — Business Hours',m:1},{t:'12×7 — Extended Hours',m:1.3},{t:'24×7 — Round the Clock',m:1.6}
+      ]},
+      {id:'resp',label:'Response SLA',opts:[
+        {t:'Standard — P1:4h / P2:8h / P3:24h',p:0},
+        {t:'Enhanced — P1:1h / P2:4h / P3:12h',p:79},
+        {t:'Critical — P1:15m / P2:1h / P3:4h',p:159}
+      ]}
+    ]
+  },
+  security:{
+    grp:'ops',title:'Security as a Service',icon:'fa-lock',desc:'DDoS protection, WAF, firewall, and compliance scanning',
+    rc:[
+      ['DDoS Basic (1 Gbps)','$99/mo'],['DDoS Standard (10 Gbps)','$299/mo'],['DDoS Enterprise (100 Gbps)','$799/mo'],
+      ['WAF — OWASP Top 10','$149/mo'],['Managed Firewall','$99/mo'],['SIEM Monitoring','$399/mo'],
+    ],
+    fields:[
+      {id:'ddos',label:'DDoS Protection',f:1,opts:[
+        {t:'— None —',p:0},{t:'Basic — Up to 1 Gbps',p:99},{t:'Standard — Up to 10 Gbps',p:299},
+        {t:'Enterprise — Up to 100 Gbps',p:799},{t:'Premium — Up to 1 Tbps',p:1499}
+      ]},
+      {id:'waf',label:'Web Application Firewall',opts:[
+        {t:'— None —',p:0},{t:'WAF — OWASP Top 10',p:149},{t:'WAF + Bot Management',p:249},{t:'WAF + API Protection',p:349}
+      ]},
+      {id:'fw',label:'Managed Firewall',opts:[
+        {t:'— None —',p:0},{t:'Perimeter Firewall (Shared)',p:99},{t:'Dedicated Firewall Appliance',p:199},{t:'HA Firewall Pair',p:349}
+      ]},
+      {id:'extra',label:'Additional Security',opts:[
+        {t:'— None —',p:0},{t:'Vulnerability Scanning (Monthly)',p:79},
+        {t:'SIEM Monitoring',p:399},{t:'Penetration Testing (Quarterly)',p:599},{t:'Compliance Assessment (SOC2/ISO)',p:899}
+      ]}
+    ]
+  },
+  dbaas:{
+    grp:'ops',title:'Database as a Service',icon:'fa-database',desc:'Managed database with automated operations (per vCPU)',
+    mode:'perCPU',
+    rc:[
+      ['MySQL 8.0','$12/vCPU/mo'],['PostgreSQL 16','$14/vCPU/mo'],['MongoDB 7.0','$16/vCPU/mo'],
+      ['Redis 7 (In-Memory)','$10/vCPU/mo'],['SQL Server 2022','$24/vCPU/mo'],
+    ],
+    fields:[
+      {id:'engine',label:'Database Engine',f:1,opts:[
+        {t:'— Select —',g:0},{t:'MySQL 8.0',g:12},{t:'PostgreSQL 16',g:14},{t:'MariaDB 11',g:12},
+        {t:'MongoDB 7.0',g:16},{t:'Redis 7 (In-Memory)',g:10},{t:'SQL Server 2022',g:24},{t:'Elasticsearch 8',g:14}
+      ]},
+      {id:'vcpu',label:'vCPU Allocation',opts:[
+        {t:'— Select —',c:0},{t:'2 vCPU',c:2},{t:'4 vCPU',c:4},{t:'8 vCPU',c:8},
+        {t:'16 vCPU',c:16},{t:'32 vCPU',c:32},{t:'64 vCPU',c:64}
+      ]},
+      {id:'ha',label:'High Availability',opts:[
+        {t:'Single Instance',m:1},{t:'Primary + Replica',m:2},{t:'Multi-AZ Cluster',m:3}
+      ]}
+    ]
+  },
+  loadbal:{
+    grp:'ops',title:'Load Balancer as a Service',icon:'fa-scale-balanced',desc:'Layer 4/7 traffic distribution with SSL offloading',
+    rc:[
+      ['Layer 4 TCP/UDP','$49/mo'],['Layer 7 HTTP/HTTPS','$99/mo'],['Global Load Balancer','$199/mo'],
+    ],
+    fields:[
+      {id:'type',label:'Load Balancer Type',f:1,opts:[
+        {t:'— Select —',p:0},{t:'Layer 4 — TCP/UDP',p:49},{t:'Layer 7 — HTTP/HTTPS',p:99},{t:'Global Load Balancer',p:199}
+      ]},
+      {id:'thru',label:'Throughput',opts:[
+        {t:'100 Mbps (Included)',p:0},{t:'1 Gbps',p:29},{t:'5 Gbps',p:79},{t:'10 Gbps',p:149}
+      ]},
+      {id:'ssl',label:'SSL/TLS Offloading',opts:[
+        {t:'— None —',p:0},{t:'TLS Termination (Let\'s Encrypt Auto)',p:0},
+        {t:'TLS + Custom Certificate',p:19},{t:'mTLS (Mutual TLS)',p:49}
+      ]}
+    ]
+  }
+};
+
+const BILL={monthly:{l:'Monthly',m:1,d:0},quarterly:{l:'Quarterly',m:3,d:.05},semiannual:{l:'Semi-Annual',m:6,d:.10},annual:{l:'Annual',m:12,d:.15}};
+let items=[],qn=1000+Math.floor(Math.random()*9000);
+
+/* ═══════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildAll();
+  document.getElementById('bc').addEventListener('change',updSum);
+  document.getElementById('bg').addEventListener('click',genQ);
+  document.getElementById('bcl').addEventListener('click',clearAll);
+  document.getElementById('mo').addEventListener('click',e=>{if(e.target===e.currentTarget)clM()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')clM()});
+  updSum();
+});
+
+/* ═══════════════════════════════════════════
+   BUILD ENTIRE UI
+   ═══════════════════════════════════════════ */
+function buildAll(){
+  const lp=document.getElementById('lp');
+  let h='';
+
+  /* ── Rate Card Reference Table ── */
+  h+=`<div class="rc-wrap"><div class="rc-head" onclick="togRC()"><div class="rc-title"><i class="fas fa-table-list"></i> Full Rate Card Reference</div><div class="rc-badge" id="rcBdg">Click to expand</div></div><div class="rc-body" id="rcBd"><div class="rc-scroll"><table class="rc-tbl"><thead><tr><th>Service</th><th>Configuration</th><th style="text-align:right">Price</th></tr></thead><tbody>`;
+  const grps={core:'Core Infrastructure',data:'Data Protection & Recovery',ops:'Managed & Security'};
+  for(const[gk,gn] of Object.entries(grps)){
+    Object.entries(S).forEach(([k,v])=>{
+      if(v.grp!==gk)return;
+      v.rc.forEach((r,i)=>{
+        h+=`<tr><td class="rc-cat">${i===0?`<i class="fas ${v.icon}"></i>${v.title}`:''}</td><td>${r[0]}</td><td class="rc-price">${r[1]}</td></tr>`;
+      });
+    });
+  }
+  h+=`</tbody></table></div></div></div>`;
+
+  /* ── Service Configurator Sections ── */
+  const gOrd={core:'Core Infrastructure',data:'Data Protection & Recovery',ops:'Managed & Security Services'};
+  let first=true;
+  for(const[gk,gn] of Object.entries(gOrd)){
+    h+=`<div class="clbl">${gn}</div>`;
+    Object.entries(S).forEach(([k,v])=>{
+      if(v.grp!==gk)return;
+      const isO=first;first=false;
+      /* Build field HTML */
+      let fH='';
+      const fds=v.fields;
+      let fi=0;
+      while(fi<fds.length){
+        const f=fds[fi];
+        const oH=f.opts.map(o=>{
+          const val=o.p||o.g||o.c||0;
+          let da='';
+          if(o.p!==undefined)da+=` data-p="${o.p}"`;
+          if(o.g!==undefined)da+=` data-g="${o.g}"`;
+          if(o.c!==undefined)da+=` data-c="${o.c}"`;
+          if(o.m!==undefined)da+=` data-m="${o.m}"`;
+          return `<option value="${val}"${da}>${o.t}</option>`;
+        }).join('');
+        const fgH=`<div class="fg"><label class="fl">${f.label}</label><select class="cs" data-f="${f.id}" data-k="${k}">${oH}</select></div>`;
+        if(f.f){fH+=`<div class="fr f1">${fgH}</div>`;fi++;}
+        else if(fi+1<fds.length&&!fds[fi+1].f){
+          const f2=fds[fi+1];
+          const oH2=f2.opts.map(o=>{
+            const val=o.p||o.g||o.c||0;let da='';
+            if(o.p!==undefined)da+=` data-p="${o.p}"`;if(o.g!==undefined)da+=` data-g="${o.g}"`;
+            if(o.c!==undefined)da+=` data-c="${o.c}"`;if(o.m!==undefined)da+=` data-m="${o.m}"`;
+            return `<option value="${val}"${da}>${o.t}</option>`;
+          }).join('');
+          fH+=`<div class="fr">${fgH}<div class="fg"><label class="fl">${f2.label}</label><select class="cs" data-f="${f2.id}" data-k="${k}">${oH2}</select></div></div>`;
+          fi+=2;
+        }else{fH+=`<div class="fr f1">${fgH}</div>`;fi++;}
+      }
+
+      h+=`
+      <div class="svc ${isO?'open':''}" data-k="${k}">
+        <div class="svc-hd" onclick="togS('${k}')">
+          <div class="svc-ic"><i class="fas ${v.icon}"></i></div>
+          <div style="flex:1;min-width:0"><div class="svc-nm">${v.title}</div><div class="svc-ds">${v.desc}</div></div>
+          <i class="fas fa-chevron-down svc-ch"></i>
+        </div>
+        <div class="svc-bd ${isO?'open':''}">
+          <div class="svc-in">
+            ${fH}
+            <div class="calc" id="cal-${k}">
+              <div class="calc-top">
+                <div class="calc-lbl"><i class="fas fa-calculator"></i> Cost Calculator</div>
+                <div class="calc-total" id="ct-${k}">$0.00</div>
+              </div>
+              <div class="calc-lines" id="cl-${k}"><div class="calc-empty">Select options above to calculate cost</div></div>
+              <div class="calc-bottom">
+                <div class="qc">
+                  <button class="qb" onclick="qChg(this,-1)"><i class="fas fa-minus" style="font-size:8px"></i></button>
+                  <input type="number" class="qi" value="1" min="1" max="999" data-k="${k}">
+                  <button class="qb" onclick="qChg(this,1)"><i class="fas fa-plus" style="font-size:8px"></i></button>
+                </div>
+                <button class="btn-add" id="ba-${k}" disabled onclick="addIt('${k}')"><i class="fas fa-plus" style="margin-right:4px"></i>Add to Quote</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  lp.innerHTML=h;
+
+  /* Attach live listeners */
+  lp.querySelectorAll('.cs').forEach(sel=>sel.addEventListener('change',()=>calc(sel.dataset.k)));
+  lp.querySelectorAll('.qi').forEach(inp=>inp.addEventListener('input',()=>calc(inp.dataset.k)));
+}
+
+/* ═══════════════════════════════════════════
+   TOGGLE RATE CARD / SECTION
+   ═══════════════════════════════════════════ */
+function togRC(){
+  const bd=document.getElementById('rcBd');
+  const badge=document.getElementById('rcBdg');
+  const shut=bd.classList.toggle('shut');
+  badge.textContent=shut?'Click to expand':'Click to collapse';
+}
+function togS(k){
+  const s=document.querySelector(`[data-k="${k}"]`);
+  const b=s.querySelector('.svc-bd');
+  const op=b.classList.contains('open');
+  s.classList.toggle('open',!op);b.classList.toggle('open',!op);
+}
+
+/* ═══════════════════════════════════════════
+   QUANTITY CONTROL
+   ═══════════════════════════════════════════ */
+function qChg(btn,d){
+  const inp=btn.parentElement.querySelector('.qi');
+  inp.value=Math.max(1,Math.min(999,(parseInt(inp.value)||1)+d));
+  calc(inp.dataset.k);
+}
+
+/* ═══════════════════════════════════════════
+   COST CALCULATOR ENGINE
+   ═══════════════════════════════════════════ */
+function calc(k){
+  const v=S[k];
+  const sec=document.querySelector(`[data-k="${k}"]`);
+  const sels=sec.querySelectorAll('.cs');
+  const qty=Math.max(1,parseInt(sec.querySelector('.qi').value)||1);
+  const isGB=v.mode==='perGB';
+  const isCPU=v.mode==='perCPU';
+
+  let baseP=0,perU=0,capU=0,mult=1;
+  const lines=[];
+
+  sels.forEach(sel=>{
+    const opt=sel.options[sel.selectedIndex];
+    const txt=opt.textContent.trim();
+    const p=parseFloat(opt.dataset.p)||0;
+    const g=parseFloat(opt.dataset.g)||0;
+    const c=parseFloat(opt.dataset.c)||0;
+    const m=parseFloat(opt.dataset.m)||1;
+    if(p>0){baseP+=p;lines.push({n:txt,v:p});}
+    if(g>0)perU=g;
+    if(c>0)capU=c;
+    if(m>1)mult*=m;
+  });
+
+  let unitP=0;
+  if(isGB&&perU>0&&capU>0){
+    unitP=perU*capU*mult;
+    lines.unshift({n:`${fmtC(capU)} × $${perU.toFixed(2)}/GB`,v:unitP});
+    if(mult>1)lines.push({n:`Redundancy multiplier (×${mult})`,v:0,note:1});
+  }else if(isCPU&&perU>0&&capU>0){
+    unitP=perU*capU*mult;
+    lines.unshift({n:`${capU} vCPU × $${perU}/vCPU`,v:unitP});
+    if(mult>1)lines.push({n:`HA multiplier (×${mult})`,v:0,note:1});
+  }else{
+    unitP=baseP*mult;
+    if(mult>1&&baseP>0){
+      lines=lines.filter(l=>!l.note);
+      lines.push({n:'Base configuration',v:baseP});
+      lines.push({n:`Support window / SLA multiplier (×${mult})`,v:unitP});
+    }
+  }
+
+  const tot=Math.round(unitP*qty*100)/100;
+  unitP=Math.round(unitP*100)/100;
+
+  /* Update calculator display */
+  const clEl=document.getElementById(`cl-${k}`);
+  const ctEl=document.getElementById(`ct-${k}`);
+  const baEl=document.getElementById(`ba-${k}`);
+
+  if(unitP>0){
+    let lh='';
+    lines.forEach(l=>{
+      lh+=`<div class="cl"><span class="cl-n">${l.n}</span><span class="cl-v ${l.note?'z':''}">${l.v>0?'$'+fN(l.v):(l.note?'applied':'—')}</span></div>`;
+    });
+    lh+=`<div class="cl-sep"></div>`;
+    lh+=`<div class="cl"><span class="cl-n" style="font-weight:600;color:var(--tx)">Unit Price</span><span class="cl-v">$${fN(unitP)}</span></div>`;
+    if(qty>1)lh+=`<div class="cl"><span class="cl-n">Quantity</span><span class="cl-v" style="color:var(--tx2)">× ${qty}</span></div>`;
+    lh+=`<div class="cl-total"><span class="cl-total-n">Total</span><span class="cl-total-v">$${fN(tot)}</span></div>`;
+    clEl.innerHTML=lh;
+    ctEl.textContent='$'+fN(tot);
+    ctEl.classList.remove('flash');
+    void ctEl.offsetWidth; /* trigger reflow */
+    ctEl.classList.add('flash');
+    baEl.disabled=false;
+  }else{
+    clEl.innerHTML='<div class="calc-empty">Select options above to calculate cost</div>';
+    ctEl.textContent='$0.00';
+    baEl.disabled=true;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   ADD / REMOVE / CLEAR
+   ═══════════════════════════════════════════ */
+function addIt(k){
+  const v=S[k];const sec=document.querySelector(`[data-k="${k}"]`);
+  const sels=sec.querySelectorAll('.cs');
+  const qty=Math.max(1,parseInt(sec.querySelector('.qi').value)||1);
+  const parts=[];sels.forEach(s=>{const t=s.options[s.selectedIndex].textContent.trim();if(!t.startsWith('—'))parts.push(t);});
+  const{unitP,totP}=getP(k);
+  items.push({key:k,cat:v.title,desc:parts.join(' · '),unitP,qty,totP});
+  toast(`${v.title} added — $${fN(totP)}/mo`,'ok');
+  updSum();
+}
+function getP(k){
+  const v=S[k];const sec=document.querySelector(`[data-k="${k}"]`);
+  const sels=sec.querySelectorAll('.cs');const qty=Math.max(1,parseInt(sec.querySelector('.qi').value)||1);
+  const isGB=v.mode==='perGB',isCPU=v.mode==='perCPU';
+  let bp=0,pu=0,cu=0,ml=1;
+  sels.forEach(sel=>{const o=sel.options[sel.selectedIndex];bp+=parseFloat(o.dataset.p)||0;const g=parseFloat(o.dataset.g)||0;if(g>0)pu=g;const c=parseFloat(o.dataset.c)||0;if(c>0)cu=c;const m=parseFloat(o.dataset.m)||1;if(m>1)ml*=m;});
+  let up=0;
+  if(isGB&&pu>0&&cu>0)up=pu*cu*ml;else if(isCPU&&pu>0&&cu>0)up=pu*cu*ml;else up=bp*ml;
+  up=Math.round(up*100)/100;
+  return{unitP:up,totP:Math.round(up*qty*100)/100};
+}
+function rmIt(i){const it=items[i];items.splice(i,1);toast(`${it.cat} removed`,'er');updSum();}
+function clearAll(){items=[];toast('All items cleared','er');updSum();}
+
+/* ═══════════════════════════════════════════
+   UPDATE SUMMARY PANEL
+   ═══════════════════════════════════════════ */
+function updSum(){
+  const ql=document.getElementById('ql'),cnt=document.getElementById('cnt');
+  const sv=document.getElementById('sv'),dr=document.getElementById('dr'),dl=document.getElementById('dl'),dv2=document.getElementById('dv2');
+  const gv=document.getElementById('gv'),bg=document.getElementById('bg'),bcl=document.getElementById('bcl'),dbdg=document.getElementById('dbdg');
+  const blr=document.getElementById('blr'),bll=document.getElementById('bll'),blv=document.getElementById('blv');
+  const cyc=document.getElementById('bc').value,bl=BILL[cyc];
+  cnt.textContent=`${items.length} item${items.length!==1?'s':''}`;
+  if(!items.length){
+    ql.innerHTML='<div class="se"><i class="fas fa-calculator"></i><p>Configure services and add them to build your quote</p></div>';
+    sv.textContent='$0.00';dr.style.display='none';gv.textContent='$0.00';blr.style.display='none';
+    bg.disabled=true;bcl.style.display='none';dbdg.style.display='none';return;
+  }
+  bg.disabled=false;bcl.style.display='block';
+  let h='';items.forEach((it,i)=>{
+    h+=`<div class="qi-item"><div class="qi-b"><div class="qi-c">${it.cat}</div><div class="qi-d">${it.desc}</div><div class="qi-q">${it.qty} × $${fN(it.unitP)}/mo</div></div><div class="qi-p">$${fN(it.totP)}</div><button class="qi-x" onclick="rmIt(${i})"><i class="fas fa-xmark"></i></button></div>`;
+  });
+  ql.innerHTML=h;
+  const sub=items.reduce((s,i)=>s+i.totP,0);
+  sv.textContent='$'+fN(sub);
+  if(bl.d>0){
+    const da=sub*bl.d;dl.textContent=`${bl.l} Discount (${bl.d*100}%)`;dv2.textContent='-$'+fN(da);
+    dr.style.display='flex';const net=sub-da;gv.textContent='$'+fN(net);
+    dbdg.style.display='inline';dbdg.textContent=`${bl.d*100}% OFF`;
+    if(bl.m>1){blr.style.display='flex';bll.textContent=`${bl.l} Total`;blv.textContent='$'+fN(Math.round(net*bl.m*100)/100);}else blr.style.display='none';
+  }else{dr.style.display='none';dbdg.style.display='none';gv.textContent='$'+fN(sub);blr.style.display='none';}
+}
+
+/* ═══════════════════════════════════════════
+   GENERATE QUOTE DOCUMENT
+   ═══════════════════════════════════════════ */
+function genQ(){
+  if(!items.length)return;
+  qn++;const cyc=document.getElementById('bc').value,bl=BILL[cyc];
+  const sub=items.reduce((s,i)=>s+i.totP,0),da=sub*bl.d,net=sub-da;
+  const now=new Date(),val=new Date(now);val.setDate(val.getDate()+30);
+  const fd=d=>d.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  let rows='';items.forEach((it,i)=>{
+    rows+=`<tr><td style="color:#888;font-size:10px">${i+1}</td><td><strong style="font-size:11px">${it.cat}</strong><br><span style="color:#777;font-size:10px">${it.desc}</span></td><td class="rq">${it.qty}</td><td class="rp">$${fN(it.unitP)}</td><td class="rt" style="font-weight:600">$${fN(it.totP)}</td></tr>`;
+  });
+  document.getElementById('qdoc').innerHTML=`
+    <div class="qd-h"><div><div class="qd-b">Infra<span>Core</span></div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">Infrastructure as a Service</div></div>
+    <div class="qd-m"><strong>Quote #INC-${now.getFullYear()}-${qn}</strong>Date: ${fd(now)}<br>Valid Until: ${fd(val)}<br>Billing: ${bl.l}</div></div>
+    <div class="qd-body">
+      <div class="qd-cl"><div><b>Company:</b> [Client Company Name]</div><div><b>Contact:</b> [Contact Person]</div><div><b>Email:</b> [email@company.com]</div><div><b>Phone:</b> [+1 (000) 000-0000]</div></div>
+      <table class="qt"><thead><tr><th style="width:26px">#</th><th>Service Description</th><th style="width:38px">Qty</th><th class="rp" style="width:76px">Unit/Mo</th><th class="rt" style="width:84px">Monthly</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="qt-i"><div class="qt-ii">
+        <div class="qt-r"><span>Subtotal</span><span>$${fN(sub)}</span></div>
+        ${bl.d>0?`<div class="qt-r dd"><span>${bl.l} Discount (${bl.d*100}%)</span><span>-$${fN(da)}</span></div>`:''}
+        ${bl.m>1?`<div class="qt-r" style="font-size:10px;color:#888"><span>${bl.l} Cost</span><span>$${fN(Math.round(net*bl.m*100)/100)}</span></div>`:''}
+        <div class="qt-r gg"><span>Monthly Total</span><span>$${fN(net)}</span></div>
+      </div></div>
+      <div class="qd-t"><h4>Terms & Conditions</h4>
+        1. All prices in USD, excluding applicable taxes.<br>
+        2. Services billed in advance on the 1st of each calendar month.<br>
+        3. One-time setup fees (where applicable) invoiced separately before activation.<br>
+        4. Network bandwidth measured as 95th percentile over the billing period.<br>
+        5. Storage overages beyond allocated capacity billed at 1.5× the base rate.<br>
+        6. SLA credits limited to 100% of the affected service monthly charge.<br>
+        7. Minimum term: 1 month. Annual commitments receive additional 5% discount.<br>
+        8. Cancellation requires 30 days written notice for non-monthly commitments.<br>
+        9. InfraCore may adjust pricing with 90 days written notice.<br>
+        10. This quote is valid for 30 days from issue date.</div>
+    </div>
+    <div class="qd-a"><button class="btn-x" onclick="clM()">Close</button><button class="btn-p" onclick="window.print()"><i class="fas fa-print" style="margin-right:4px"></i>Print / Save PDF</button></div>`;
+  document.getElementById('mo').classList.add('on');document.body.style.overflow='hidden';
+}
+function clM(){document.getElementById('mo').classList.remove('on');document.body.style.overflow='';}
+
+/* ═══════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════ */
+function fN(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmtC(gb){return gb>=1000?(gb/1000)+' TB':gb+' GB'}
+function toast(msg,type){
+  const c=document.getElementById('ts'),t=document.createElement('div');
+  t.className='t '+type;t.innerHTML=`<i class="fas ${type==='ok'?'fa-check-circle':'fa-exclamation-circle'}"></i>${msg}`;
+  c.appendChild(t);setTimeout(()=>t.remove(),2600);
+}
+</script>
+</body>
+</html>
