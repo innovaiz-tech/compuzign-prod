@@ -1,0 +1,1 @@
+import{r as o}from"./chunk-bm8ilozY.js";import{u as s}from"./chunk-CtKklEnM.js";const t=(t=!0)=>{const{pathname:r}=s();o.useEffect(()=>{window.scrollTo({top:0,behavior:t?"smooth":"auto"})},[r,t])};export{t as u};

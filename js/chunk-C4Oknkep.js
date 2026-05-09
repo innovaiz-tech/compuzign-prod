@@ -1,0 +1,1 @@
+import{r as e}from"./chunk-bm8ilozY.js";function n(){const[n,t]=e.useState({width:"undefined"!=typeof window?window.innerWidth:0});return e.useEffect(()=>{const e=()=>{t({width:window.innerWidth})};return window.addEventListener("resize",e),()=>window.removeEventListener("resize",e)},[]),n}export{n as u};
